@@ -1,12 +1,13 @@
 # googler
 Find anything within your terminal
 
+
 ## Install
 ```shell
 pip install -r requirements.txt
 ```
 
-Usage:
+## Usage:
 ```shell
 google "Facebook"
 
