@@ -8,6 +8,7 @@ pip install -r requirements.txt
 ```
 
 ## Usage:
+# Finding definition
 ```shell
 google "Facebook"
 
@@ -19,6 +20,8 @@ Facebook is an online social media and social networking service owned by Americ
 iversities and, since 2006, anyone over 13 years old. As of December 2022[update], Facebook claimed 2.96 billion monthly active users,[6] and ranked third worldwide among the most visited websites.[7] It was the most downloaded mobile 
 app of the 2010s.[8]
 ```
+
+# Finding solutions from popular coding discussion forums
 
 ```shell
 google "Type error: can't compare between a str and an int"
