@@ -7,8 +7,8 @@ Find anything within your terminal
 pip install -r requirements.txt
 ```
 
-## Usage:
-# Finding definition
+### Usage:
+#### Finding definition
 ```shell
 google "Facebook"
 
@@ -21,7 +21,7 @@ iversities and, since 2006, anyone over 13 years old. As of December 2022[updat
 app of the 2010s.[8]
 ```
 
-# Finding solutions from popular coding discussion forums
+#### Finding solutions from popular coding discussion forums
 
 ```shell
 google "Type error: can't compare between a str and an int"
