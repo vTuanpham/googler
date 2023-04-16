@@ -20,6 +20,24 @@ app of the 2010s.[8]
 ```
 
 ```shell
+google "Type error: can't compare between a str and an int"
+
+***** Result 1 *****
+Solution in https://stackoverflow.com/questions/70867801/why-doesnt-comparing-an-int-to-a-str-raise-a-typeerror
+Problem title: Why doesn't comparing an int to a str raise a TypeError?
+Number of answer in the discuss: 2
+
+Correct answer:
+From the current Python documentation for Comparisons:
+
+Objects of different types, except different numeric types, never compare equal. The == operator is always defined...
+
+(Emphasis mine.)
+```
+
+
+
+```shell
 google "How to iter through a dataloader"
 
 ***** Result 0 *****
