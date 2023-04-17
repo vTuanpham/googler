@@ -2,11 +2,13 @@
 import requests
 import time
 import sys
+sys.path.insert(0,r'./') #Add root directory here
 import argparse
 from typing import List
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
+from utils.utils import parse_print
 
 
 class Googler:
@@ -104,10 +106,19 @@ class Googler:
 
         soup = BeautifulSoup(robj.text, 'lxml')
         href_list = []
+        featured_ans = None
 
         if self.search_engine == 'google':
             init_class_name = 'yuRUbf'
             class_name = init_class_name if class_name is None else class_name
+
+            # Find featured answer
+            try:
+                featured_ans_tag = soup.find('div', {'class':'ifM9O'})
+                featured_ans = featured_ans_tag.find('span', {'class': 'hgKElc'}).text
+            except AttributeError:
+                pass
+
             tags = soup.findAll('div', {'class': class_name})
             for tag in tags:
                 for a_tag in tag.findAll('a'):
@@ -121,8 +132,9 @@ class Googler:
                 for a_tag in tag.findAll('a'):
                     href_list.append(a_tag.__getitem__('href'))
 
-        return href_list
+        return featured_ans, href_list
 
+    @parse_print
     def parse_page(self, robj, parse_page):
 
         if parse_page == 'stackoverflow' or parse_page == 'stackexchange' \
@@ -193,60 +205,46 @@ class Googler:
 
     def search(self, query):
         repobj = self.fetch_search_html(query)
-        links = self.parse_url(repobj)
+        featured_ans, links = self.parse_url(repobj)
+        if featured_ans is not None:
+            print(f'\nFeatured answer: {featured_ans}')
         for idx, link in enumerate(links):
             if 'https://stackoverflow.com/' in link:
                 print(f"\n\n***** Result {idx} *****")
                 print(f"Solution in {link}")
                 repobj = self.fetch_html(page='stackoverflow',url=link)
-                title, num_ans, parse_page = self.parse_page(repobj, parse_page='stackoverflow')
-                print(f'Problem title: {title}')
-                print(f'Number of answer in the discuss: {num_ans}')
-                print(f'\nCorrect answer: ')
-                print(parse_page.strip())
+                self.parse_page(repobj, parse_page='stackoverflow')
+
             if 'https://academia.stackexchange.com/' in link:
                 print(f"\n\n***** Result {idx} *****")
                 print(f"Solution in {link}")
                 repobj = self.fetch_html(page='stackexchange',url=link)
-                title, num_ans, parse_page = self.parse_page(repobj, parse_page='stackexchange')
-                print(f'Problem title: {title}')
-                print(f'Number of answer in the discuss: {num_ans}')
-                print(f'\nCorrect answer: ')
-                print(parse_page.strip())
+                self.parse_page(repobj, parse_page='stackexchange')
+
             if 'https://codegolf.stackexchange.com/' in link:
                 print(f"\n\n***** Result {idx} *****")
                 print(f"Solution in {link}")
                 repobj = self.fetch_html(page='codegolf_stackexchange',url=link)
-                title, num_ans, parse_page = self.parse_page(repobj, parse_page='codegolf_stackexchange')
-                print(f'Problem title: {title}')
-                print(f'Number of answer in the discuss: {num_ans}')
-                print(f'\nCorrect answer: ')
-                print(parse_page.strip())
+                self.parse_page(repobj, parse_page='codegolf_stackexchange')
+
             if 'https://math.stackexchange.com/' in link:
                 print(f"\n\n***** Result {idx} *****")
                 print(f"Solution in {link}")
                 repobj = self.fetch_html(page='math_stackexchange',url=link)
-                title, num_ans, parse_page = self.parse_page(repobj, parse_page='math_stackexchange')
-                print(f'Problem title: {title}')
-                print(f'Number of answer in the discuss: {num_ans}')
-                print(f'\nCorrect answer: ')
-                print(parse_page.strip())
+                self.parse_page(repobj, parse_page='math_stackexchange')
+
             if 'https://discuss.pytorch.org/' in link:
                 print(f"\n\n***** Result {idx} *****")
                 print(f"Solution in {link}")
                 repobj = self.fetch_html(page='pytorch',url=link)
-                title, num_ans, parse_page = self.parse_page(repobj, parse_page='pytorch')
-                print(f'Problem title: {title}')
-                print(f'Number of answer in the discuss: {num_ans}')
-                print(f'\nCorrect answer: ')
-                print(parse_page.strip())
+                self.parse_page(repobj, parse_page='pytorch')
+
             if 'https://en.wikipedia.org/' in link:
                 print(f"\n\n***** Result {idx} *****")
                 print(f"Definition in {link}")
                 repobj = self.fetch_html(page='wiki',url=link)
-                title, parse_page = self.parse_page(repobj, parse_page='wiki')
-                print(f'Definition title: {title}')
-                print(parse_page.strip())
+                self.parse_page(repobj, parse_page='wiki')
+
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description='Query result from the internet and returning it back')
