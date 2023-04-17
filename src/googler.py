@@ -208,37 +208,37 @@ class Googler:
             print(f'\nFeatured answer: {featured_ans}')
         for idx, link in enumerate(links):
             if 'https://stackoverflow.com/' in link:
-                print(f"\n\n***** Result {idx} *****")
+                print(f"\n\n----- |Result| {idx} -----")
                 print(f"Solution in {link}")
                 repobj = self.fetch_html(page='stackoverflow',url=link)
                 self.parse_page(repobj, parse_page='stackoverflow')
 
             if 'https://academia.stackexchange.com/' in link:
-                print(f"\n\n***** Result {idx} *****")
+                print(f"\n\n----- |Result| {idx} -----")
                 print(f"Solution in {link}")
                 repobj = self.fetch_html(page='stackexchange',url=link)
                 self.parse_page(repobj, parse_page='stackexchange')
 
             if 'https://codegolf.stackexchange.com/' in link:
-                print(f"\n\n***** Result {idx} *****")
+                print(f"\n\n----- |Result| {idx} -----")
                 print(f"Solution in {link}")
                 repobj = self.fetch_html(page='codegolf_stackexchange',url=link)
                 self.parse_page(repobj, parse_page='codegolf_stackexchange')
 
             if 'https://math.stackexchange.com/' in link:
-                print(f"\n\n***** Result {idx} *****")
+                print(f"\n\n----- |Result| {idx} -----")
                 print(f"Solution in {link}")
                 repobj = self.fetch_html(page='math_stackexchange',url=link)
                 self.parse_page(repobj, parse_page='math_stackexchange')
 
             if 'https://discuss.pytorch.org/' in link:
-                print(f"\n\n***** Result {idx} *****")
+                print(f"\n\n----- |Result| {idx} -----")
                 print(f"Solution in {link}")
                 repobj = self.fetch_html(page='pytorch',url=link)
                 self.parse_page(repobj, parse_page='pytorch')
 
             if 'https://en.wikipedia.org/' in link:
-                print(f"\n\n***** Result {idx} *****")
+                print(f"\n\n----- |Result| {idx} -----")
                 print(f"Definition in {link}")
                 repobj = self.fetch_html(page='wiki',url=link)
                 self.parse_page(repobj, parse_page='wiki')

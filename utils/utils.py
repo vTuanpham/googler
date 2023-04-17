@@ -7,16 +7,21 @@ def parse_print(func):
     def parse_print_wrapper(*args, **kwargs):
         try:
             title, num_ans, parse_page = func(*args, **kwargs)
-            print(f'Problem title: {title}')
-            print(f'Number of answer in the discuss: {num_ans}')
-            print(f'\nCorrect answer: ')
-            print(parse_page.strip())
+            print(f'\n Problem title: {title}')
+            print(f' Number of answer in the discuss: {num_ans}')
+            print(f'\n Correct answer: ')
+            print('-' * 17)
+            print(f'{parse_page.strip()}')
+            print('-' * 17)
 
             return title, num_ans, parse_page
-        except:
+        except ValueError:
             title, parse_page = func(*args, **kwargs)
-            print(f'Definition title: {title}')
-            print(parse_page.strip())
+            print(f'\n  Definition title: {title}')
+            print(f'\n Definition: ')
+            print('-' * 17)
+            print(f'{parse_page.strip()}')
+            print('-' * 17)
 
             return title, parse_page
 
