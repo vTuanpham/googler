@@ -21,6 +21,21 @@ iversities and, since 2006, anyone over 13 years old. As of December 2022[updat
 app of the 2010s.[8]
 ```
 
+```shell
+google "who own nasa"
+
+Featured answer: The National Aeronautics and SpaceSpaceOuter space is not completely empty; it is a near-perfect vacuum containing a low density of particles, predominantly a plasma of hydrogen and helium, as well as electromagnetic r
+adiation, magnetic fields, neutrinos, dust, and cosmic rays.https://en.wikipedia.org › wiki › Outer_spaceOuter space - Wikipedia Administration (NASA /ˈnæsə/) is an independent agency of the U.S. federal government responsible for the 
+civil space program, aeronautics research, and space research. NASA Headquarters in Washington, D.C. Washington, D.C.
+
+
+***** Result 0 *****
+Definition in https://en.wikipedia.org/wiki/NASA#:~:text=The%20National%20Aeronautics%20and%20Space,aeronautics%20research%2C%20and%20space%20research.&text=NASA%20Headquarters%20in%20Washington%2C%20D.C.&text=Washington%2C%20D.C.,-38%
+C2%B052
+Definition title: NASA
+The National Aeronautics and Space Administration (NASA /ˈnæsə/) is an independent agency of the U.S. federal government responsible for the civil space program, aeronautics research, and space research.
+```
+
 #### Finding solutions from popular coding discussion forums
 
 ```shell
@@ -98,7 +113,6 @@ tensor([[6.],
         [2.]])
 tensor([[0.],
         [9.]])
-
 ```
 
 
