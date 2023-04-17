@@ -41,6 +41,21 @@ iversities and, since 2006, anyone over 13 years old. As of December 2022[updat
 app of the 2010s.[8]
 -----------------
 ```
+```shell
+google "rick roll"
+
+----- |Result| 0 -----
+Definition in https://en.wikipedia.org/wiki/Rickrolling
+
+  Definition title: Rickrolling
+
+ Definition: 
+-----------------
+Rickrolling or a Rickroll is an internet meme involving the unexpected appearance of the music video for the 1987 song "Never Gonna Give You Up", performed by English singer Rick Astley. The aforementioned video has over 1 billion view
+s on YouTube. The meme is a type of bait and switch, usually using a disguised hyperlink that leads to the music video. When victims click on a seemingly unrelated link, the site with the music video loads instead of what was expected,
+ and they have been "Rickrolled". The meme has also extended to using the song's lyrics, or singing it, in unexpected contexts. Astley himself has also been Rickrolled on several occasions.[1][2][3]
+-----------------
+```
 
 ```shell
 google "what is lipstick made out of"
