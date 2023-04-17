@@ -244,23 +244,4 @@ class Googler:
                 self.parse_page(repobj, parse_page='wiki')
 
 
-def parse_args(args):
-    parser = argparse.ArgumentParser(description='Query result from the internet and returning it back')
-
-    parser.add_argument('--search_engine', type=str, default='google', help="The search engine to query")
-    parser.add_argument('query', type=str, help="Query string")
-
-    args = parser.parse_args(args)
-
-    return args
-
-
-def main(args):
-    args = parse_args(args)
-    googler = Googler(search_engine=args.search_engine)
-    googler.search(query=args.query)
-
-if __name__ == '__main__':
-    main(sys.argv[1:])
-
 
