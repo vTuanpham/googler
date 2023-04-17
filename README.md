@@ -1,4 +1,4 @@
-# googler
+# Googler
 Find anything within your terminal
 
 
