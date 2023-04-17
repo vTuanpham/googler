@@ -21,6 +21,20 @@ iversities and, since 2006, anyone over 13 years old. As of December 2022[updat
 app of the 2010s.[8]
 ```
 
+```shell
+google "wiki"
+
+Featured answer: A wiki is essentially a database for creating, browsing, and searching through information. A wiki allows non-linear, evolving, complex, and networked text, while also allowing for editor argument, debate, and interact
+ion regarding the content and formatting.
+
+
+***** Result 0 *****
+Definition in https://en.wikipedia.org/wiki/Wiki#:~:text=A%20wiki%20is%20essentially%20a,regarding%20the%20content%20and%20formatting.
+Definition title: Wiki
+A wiki (/ˈwɪki/ (listen) WIK-ee) is an online hypertext publication collaboratively edited and managed by its own audience, using a web browser. A typical wiki contains multiple pages for the subjects or scope of the project, and could
+ be either open to the public or limited to use within an organization for maintaining its internal knowledge base.
+```
+
 #### Finding solutions from popular coding discussion forums
 
 ```shell
@@ -98,7 +112,6 @@ tensor([[6.],
         [2.]])
 tensor([[0.],
         [9.]])
-
 ```
 
 
