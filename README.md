@@ -6,19 +6,60 @@ Find anything within your terminal
 ```shell
 pip install -r requirements.txt
 ```
+## Command
+```shell
+usage: google [-h] [--search_engine SEARCH_ENGINE] query
+
+Query result from the internet and returning it back
+
+positional arguments:
+  query                 Query string
+
+options:
+  -h, --help            show this help message and exit
+  --search_engine SEARCH_ENGINE
+                        The search engine to query
+```
+
+
 
 ### Usage:
 #### Finding definition
 ```shell
 google "Facebook"
 
-***** Result 6 *****
+----- |Result| 6 -----
 Definition in https://en.wikipedia.org/wiki/Facebook
-Definition title: Facebook
+
+  Definition title: Facebook
+
+ Definition: 
+-----------------
 Facebook is an online social media and social networking service owned by American technology giant Meta Platforms. Created in 2004 by Mark Zuckerberg with fellow Harvard College students and roommates Eduardo Saverin, Andrew McCollum,
  Dustin Moskovitz, and Chris Hughes, its name derives from the face book directories often given to American university students. Membership was initially limited to only Harvard students, gradually expanding to other North American un
 iversities and, since 2006, anyone over 13 years old. As of December 2022[update], Facebook claimed 2.96 billion monthly active users,[6] and ranked third worldwide among the most visited websites.[7] It was the most downloaded mobile 
 app of the 2010s.[8]
+-----------------
+```
+
+```shell
+google "what is lipstick made out of"
+
+Featured answer: Most lipsticks are made from three basic ingredients: wax, oil, and pigment. Pigment is the color. Waxes provide shape and a spreadable texture. Oils -- such as petrolatum, lanolin, cocoa butter, jojoba, castor, and mi
+neral -- add moisture.
+
+
+----- |Result| 3 -----
+Definition in https://en.wikipedia.org/wiki/Lipstick
+
+  Definition title: Lipstick
+
+ Definition:
+-----------------
+Lipstick is a cosmetic product used to apply coloration and texture to lips, often made of wax and oil. Different pigments are used to produce color, and minerals such as silica may be used to provide texture. The use of lipstick dates
+ back to early civilizations such as Sumer and the Indus Valley Civilisation, and was popularized in the Western world in the 16th century. Some lipsticks contain traces of toxic materials, such as lead and PFAS, which prompted health 
+concerns and regulation.
+-----------------
 ```
 
 ```shell
@@ -28,11 +69,16 @@ Featured answer: A wiki is essentially a database for creating, browsing, and se
 ion regarding the content and formatting.
 
 
-***** Result 0 *****
+----- |Result| 0 -----
 Definition in https://en.wikipedia.org/wiki/Wiki#:~:text=A%20wiki%20is%20essentially%20a,regarding%20the%20content%20and%20formatting.
-Definition title: Wiki
+
+  Definition title: Wiki
+
+ Definition:
+-----------------
 A wiki (/ˈwɪki/ (listen) WIK-ee) is an online hypertext publication collaboratively edited and managed by its own audience, using a web browser. A typical wiki contains multiple pages for the subjects or scope of the project, and could
  be either open to the public or limited to use within an organization for maintaining its internal knowledge base.
+-----------------
 ```
 
 #### Finding solutions from popular coding discussion forums
@@ -40,33 +86,38 @@ A wiki (/ˈwɪki/ (listen) WIK-ee) is an online hypertext publication collaborat
 ```shell
 google "Type error: can't compare between a str and an int"
 
-***** Result 1 *****
+----- |Result| 1 -----
 Solution in https://stackoverflow.com/questions/70867801/why-doesnt-comparing-an-int-to-a-str-raise-a-typeerror
-Problem title: Why doesn't comparing an int to a str raise a TypeError?
-Number of answer in the discuss: 2
 
-Correct answer:
+ Problem title: Why doesn't comparing an int to a str raise a TypeError?
+ Number of answer in the discuss: 2
+
+ Correct answer:
+-----------------
 From the current Python documentation for Comparisons:
 
 Objects of different types, except different numeric types, never compare equal. The == operator is always defined...
 
 (Emphasis mine.)
+-----------------
+
 ```
-
-
 
 ```shell
 google "How to iter through a dataloader"
 
-***** Result 0 *****
+
+----- |Result| 0 -----
 Solution in https://discuss.pytorch.org/t/iterating-through-a-dataloader-object/25437
-Problem title: 
+
+ Problem title:
                 Iterating through a Dataloader object
 
-Number of answer in the discuss: 4
+ Number of answer in the discuss: 4
 
-Correct answer:
-The normalization is usually done in the dataset 292 via the transform argument.
+ Correct answer:
+-----------------
+The normalization is usually done in the dataset 293 via the transform argument.
 The dataloader provides a Python iterator returning tuples and the enumerate will add the step. You can experience this manually (in Python3):
 it = iter(train_loader)
 first = next(it)
@@ -77,14 +128,17 @@ Python Iterators are a concept many people ask and write about in various forums
 Finally the step, (x, y) works due to “tuple unpacking”, again a general Python thing.
 Best regards
 Thomas
+-----------------
 
 
-***** Result 2 *****
+----- |Result| 2 -----
 Solution in https://stackoverflow.com/questions/69427073/how-to-iterate-over-dataloader-until-a-number-of-samples-is-seen
-Problem title: How to iterate over Dataloader until a number of samples is seen?
-Number of answer in the discuss: 2
 
-Correct answer:
+ Problem title: How to iterate over Dataloader until a number of samples is seen?
+ Number of answer in the discuss: 2
+
+ Correct answer:
+-----------------
 You can use torch.utils.data.RandomSampler and sample from your dataset. Here is a minimal setup example:
 class DS(Dataset):
     def __len__(self):
@@ -112,6 +166,8 @@ tensor([[6.],
         [2.]])
 tensor([[0.],
         [9.]])
+-----------------
+
 ```
 
 
