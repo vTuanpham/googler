@@ -282,7 +282,8 @@ class Googler:
                 repobj = self.fetch_html(page='wiki',url=link)
                 self.parse_page(repobj, parse_page='wiki')
 
-            if 'https://www.accuweather.com/' in link and 'hourly-weather-forecast' not in link:
+            if 'https://www.accuweather.com/' in link and 'hourly-weather-forecast' not in link\
+                    and ' https://translate.google.com/' not in link:
                 print(f"\n\n----- |Result| {idx} -----")
                 print(f"Weather info {link}")
                 repobj = self.fetch_html(page='Accweather',url=link)

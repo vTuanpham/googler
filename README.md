@@ -1,7 +1,7 @@
 # Googler
 Find anything within your terminal
 
-Give me a star if you find this useful 🌠!
+Give me a star 🌠 if you find this useful!
 
 ## Install
 ```shell
