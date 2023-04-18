@@ -1,11 +1,10 @@
-import requests
-import time
 import sys
+import requests
 sys.path.insert(0,r'./') #Add root directory here
 from typing import List
 from bs4 import BeautifulSoup
-from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from utils.utils import parse_print
 
 
@@ -27,7 +26,6 @@ class Googler:
             'accept': '*/*',
             'accept-language': 'en,vi;q=0.9,en-CA;q=0.8,en-NZ;q=0.7,vi-VN;q=0.6,en-GB;q=0.5,en-US;q=0.4',
             'cache-control': 'no-cache',
-            'cookie': 'S=billing-ui-v3=pxApETqldBkuFJB5dvhfmnmEjQSygT1o:billing-ui-v3-efe=pxApETqldBkuFJB5dvhfmnmEjQSygT1o; SEARCH_SAMESITE=CgQIwJcB; OTZ=6981436_28_28__28_; SID=VgjOxeftABrio97kzbcnoouuctRKXm42s2WcxD0dgkg0gr2LJ7eXUaSmh8ZbkHMvX4s9Vg.; __Secure-1PSID=VgjOxeftABrio97kzbcnoouuctRKXm42s2WcxD0dgkg0gr2LUwqK3CHVL3egyZNnrP6TiQ.; __Secure-3PSID=VgjOxeftABrio97kzbcnoouuctRKXm42s2WcxD0dgkg0gr2LMHt5G0EZPx0c4QKSJqNlfQ.; HSID=APHGfeuKJp0vfdslA; SSID=A8x9T6Kvlh2Iwwvpg; APISID=q0WoEerdv-ERXRvX/ANixn7OUJ-2Net5JI; SAPISID=lH7Zm_E6465KE-Ax/Atj-pfzgzQOojPqYL; __Secure-1PAPISID=lH7Zm_E6465KE-Ax/Atj-pfzgzQOojPqYL; __Secure-3PAPISID=lH7Zm_E6465KE-Ax/Atj-pfzgzQOojPqYL; NID=511=T5To3UV10PHOOkhiboL4bZa5OE9UwtprBpjIU1xJYlltnBgpfXL1c39McOHpnjrnYk6dnkioYSzDpkClrkVl_I65ghE4RsqMPMrYB-DtKXdk-VQ0iKetRRrlbZHBjA_cbWyyTg0Lrz4edHExkpMtxpxTAYiafhU0qjJ_NVIEtbIMoj5QgI0ykLCKambSv7d7ToQZOHZikv3f0Uw7yDQnkD4kxeOHkZFmRvgH4ma6WOC5oGsJgQwYFa2rdMiPVtWP2lrBTGlEa2VuNhT9a3OTPc7OX432LFv97ZDU66ifNdFBxUjAHgG5ysPEi7UjbLtr2U2E-nKkatqEgjwfBz2B_a0BznRXZOSWMUM9MkUwHJ-ZrGjxJ68; AEC=AUEFqZf8BkHA7aR4qczY9LXa42w1lH01gXPAbzuh3R0tfxB8PEUFeJ3tIXg; DV=k4fzKS9NhUtRoL-BnfVaSItCx6s-eBgaJsH45ZPKQwEAAFBxZ8UCkzF_XwEAAASIm0L1K13fWQAAAGnw0XD9ZnENFwAAAA; 1P_JAR=2023-04-15-07; SIDCC=AP8dLtyAhlXcSw-RVD-zFNQJJ93z-UDKfnXiWVM19KyCzTAVZOpOKnaGftS7xO2hQln0TBFbhYQ; __Secure-1PSIDCC=AP8dLtyPp3rLaCwB6nkJgy0nd3b-5mM8TS41I2jJPC4_Jz8eXGujFH-H4J93k4JxxwI2_4OsrXc; __Secure-3PSIDCC=AP8dLtxksuaTIufONI1n4YIV-wm2YW6rSn3X0aJwbpPB6xC9ohQ_O8r79Oy9GsS07m_2QM485O5U',
             'pragma': 'no-cache',
             'referer': 'https://www.google.com/',
             'upgrade-insecure-requests': '1',
@@ -68,6 +66,12 @@ class Googler:
             headers.update({'referer': 'https://en.wikipedia.org/',
                             'origin': 'https://en.wikipedia.org'})
 
+        if page == 'Accweather':
+            params = self.init_params
+            headers = self.init_headers
+            headers.update({'referer': 'https://www.accuweather.com/',
+                            'origin': 'https://www.accuweather.com'})
+
         if page == 'pytorch':
             options = Options()
             options.add_argument("--headless")
@@ -100,7 +104,7 @@ class Googler:
 
         return response
 
-    def parse_url(self, robj, class_name=None) -> List[str]:
+    def parse_url(self, robj, class_name=None):
 
         soup = BeautifulSoup(robj.text, 'lxml')
         href_list = []
@@ -176,6 +180,40 @@ class Googler:
                 if len(text.text) > 100:
                     return title, text.text
 
+        if parse_page == 'Accweather':
+            soup = BeautifulSoup(robj.text, 'lxml')
+
+            weather_info_tag = soup.find('div', {'class': 'page-content content-module'})
+            # Current weather
+            cur_weather_info_tag = weather_info_tag.find('a', {'class': 'cur-con-weather-card card-module content-module lbar-panel'})
+            last_update = cur_weather_info_tag.find('p', {'class': 'cur-con-weather-card__subtitle'}).text
+            temp = cur_weather_info_tag.find('div', {'class': 'temp'}).text
+            real_feel_temp = cur_weather_info_tag.find('div', {'class': 'real-feel'}).text
+            weather_description = cur_weather_info_tag.find('span', {'class': 'phrase'}).text
+
+            # Current air quality
+            air_quality_tag = weather_info_tag.find('div', {'class': 'air-quality-content'})
+            date = air_quality_tag.find('p', {'class': 'date'}).text
+            aqi_tag = air_quality_tag.find('div', {'class': 'aq-number-container'})
+            aqi_num = aqi_tag.find('div', {'class': 'aq-number'}).text + \
+                      aqi_tag.find('div', {'class': 'aq-unit'}).text.lstrip()
+            air_quality_des = weather_info_tag.find('p', {'class': 'category-text'}).text
+            air_quality_statement = weather_info_tag.find('p', {'class': 'statement'}).text
+
+            # TOMORROW’S WEATHER FORECAST
+            tomorrow_weather_tag = weather_info_tag.find('div', {'data-qa': 'tomorrowWeatherCard'})
+            tomorrow_date = tomorrow_weather_tag.find('span', {'class': 'sub-title'}).text
+            tomorrow_temp = tomorrow_weather_tag.find('div', {'class': 'temp'}).text + \
+                   tomorrow_weather_tag.find('span', {'class': 'after-temp'}).text
+            tomorrow_real_feel_temp = tomorrow_weather_tag.find('div', {'class': 'real-feel'}).text
+            tomorrow_weather_description = tomorrow_weather_tag.find('div', {'class': 'phrase'}).text
+
+            weather_info = [[last_update, temp, real_feel_temp, weather_description],
+                            [date, aqi_num, air_quality_des, air_quality_statement],
+                            [tomorrow_date, tomorrow_temp, tomorrow_real_feel_temp, tomorrow_weather_description], []]
+
+            return weather_info
+
         if parse_page == 'pytorch':
             soup = BeautifulSoup(robj.page_source, 'lxml')
             li_tag = soup.find('li',{'class': 'replies'})
@@ -206,6 +244,7 @@ class Googler:
         featured_ans, links = self.parse_url(repobj)
         if featured_ans is not None:
             print(f'\nFeatured answer: {featured_ans}')
+
         for idx, link in enumerate(links):
             if 'https://stackoverflow.com/' in link:
                 print(f"\n\n----- |Result| {idx} -----")
@@ -242,6 +281,12 @@ class Googler:
                 print(f"Definition in {link}")
                 repobj = self.fetch_html(page='wiki',url=link)
                 self.parse_page(repobj, parse_page='wiki')
+
+            if 'https://www.accuweather.com/' in link and 'hourly-weather-forecast' not in link:
+                print(f"\n\n----- |Result| {idx} -----")
+                print(f"Weather info {link}")
+                repobj = self.fetch_html(page='Accweather',url=link)
+                self.parse_page(repobj, parse_page='Accweather')
 
 
 
