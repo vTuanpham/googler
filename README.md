@@ -96,6 +96,68 @@ A wiki (/ˈwɪki/ (listen) WIK-ee) is an online hypertext publication collaborat
  be either open to the public or limited to use within an organization for maintaining its internal knowledge base.
 -----------------
 ```
+#### Finding current weather information
+```shell
+google "How is the weather in Thu Duc?"
+
+----- |Result| 0 -----
+Weather info https://www.accuweather.com/en/vn/thu-duc/414495/weather-forecast/414495
+
+ Weather information: 
+
+ Current weather info on date 4/18: 
+-----------------                   
+Last update: 11:25 PM
+Current temperature: 28°C
+Current real feel temperature: RealFeel® 30°C
+Current weather description: Mostly clear
+-----------------
+
+ Current air quality:
+-----------------
+Air quality AQI: 25 AQI
+Air quality description: Fair
+Air quality statement: The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.
+-----------------
+
+ Tomorrow weather info on date 4/19:
+-----------------
+Tomorrow temperature: 35°/ 27°/ 27°
+Tomorrow real feel temperature: RealFeel® 43°
+Tomorrow weather description: Clouds and sun
+-----------------
+```
+
+```shell
+google "How is the weather in Bao Loc?"
+
+----- |Result| 0 -----
+Weather info https://www.accuweather.com/en/vn/bao-loc/352265/weather-forecast/352265
+
+ Weather information:
+
+ Current weather info on date 4/18:
+-----------------
+Last update: 11:27 PM
+Current temperature: 21°C
+Current real feel temperature: RealFeel® 22°C
+Current weather description: Partly cloudy
+-----------------
+
+ Current air quality:
+-----------------
+Air quality AQI: 21 AQI
+Air quality description: Fair
+Air quality statement: The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.
+-----------------
+
+ Tomorrow weather info on date 4/19:
+-----------------
+Tomorrow temperature: 33°/ 19°/ 19°
+Tomorrow real feel temperature: RealFeel® 39°
+Tomorrow weather description: Some sun with a stray t-storm
+-----------------
+```
 
 #### Finding solutions from popular coding discussion forums
 
