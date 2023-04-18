@@ -60,7 +60,6 @@ def parse_print(func):
             print(f'Air quality AQI: {cur_air_quality[1]}')
             print(f'Air quality description: {cur_air_quality[2]}')
             print(f'Air quality statement: {cur_air_quality[3]}')
-            print(f'Weather description: {cur_air_quality[3]}')
             print('-' * 17)
 
             print(f'\n Tomorrow weather info on date {weather_info[2][0]}: ')
