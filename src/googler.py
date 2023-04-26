@@ -1,16 +1,20 @@
 import sys
 import requests
+from javascript import require
 sys.path.insert(0,r'./') #Add root directory here
 from typing import List
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from utils.utils import parse_print
+from requests_ip_rotator import ApiGateway, EXTRA_REGIONS
+img_display = require("../utils/img_display.js")
 
 
 class Googler:
     def __init__(self, search_engine='google'):
         # Query string parameters to crawl through results pages
+
         self.init_params = {
             'sxsrf': 'ACYBGNRmhZ3C1fo8pX_gW_d8i4gVeu41Bw:1575654668368',
             'ei': 'DJXqXcmDFumxrgSbnYeQBA',
@@ -32,9 +36,16 @@ class Googler:
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'
         }
 
+        # Init proxy
+        self.proxy = {
+            "http": 'https://159.223.41.3:5000'
+        }
+
         self.search_engine = search_engine
 
     def fetch_html(self, page=None, url=None):
+
+        proxy = self.proxy
 
         if page == 'stackoverflow':
             params = self.init_params
@@ -81,11 +92,14 @@ class Googler:
 
             return browser
 
-        response = requests.get(url=url, params=params, headers=headers)
+        response = requests.get(url=url, params=params, headers=headers, proxies=proxy)
 
         return response
 
     def fetch_search_html(self, query):
+
+        proxy = self.proxy
+
         if self.search_engine == 'google':
             params = self.init_params
             params.update({'q': query})
@@ -100,7 +114,7 @@ class Googler:
                             'origin': 'https://www.bing.com'})
             url = 'https://www.bing.com/search'
 
-        response = requests.get(url=url, params=params, headers=headers)
+        response = requests.get(url=url, params=params, headers=headers, proxies=proxy)
 
         return response
 
@@ -143,6 +157,8 @@ class Googler:
                 or parse_page == 'codegolf_stackexchange' or parse_page == 'math_stackexchange':
             soup = BeautifulSoup(robj.text, 'lxml')
 
+            profile_url = None
+
             # Find problem title
             tag_title = soup.find('a', {'class': 'question-hyperlink'})
             title = tag_title.text
@@ -151,7 +167,9 @@ class Googler:
             num_ans_header = soup.find('h2', {'class': 'mb0'})
             num_ans = int(num_ans_header.get('data-answercount'))
             if num_ans == 0:
-                return title, num_ans, 'No answer found!'
+                return {'title': title, 'num_ans': num_ans,
+                        'solution': 'No answer found!',
+                        'profile_url': profile_url, 'type': 'solution'}
 
             # Find correct ans
             tag_ans = soup.find('div', {'class': 'answer js-answer accepted-answer js-accepted-answer'})
@@ -160,7 +178,14 @@ class Googler:
                 tag_ans = soup.find('div', {'class': 'answer js-answer'})
             text = tag_ans.find('div', {'class': 's-prose js-post-body'})
 
-            return title, num_ans, text.text
+            # Find ans avatar
+            profile_avt_tag = tag_ans.find('div', {'class': 'gravatar-wrapper-32'})
+            profile_url = profile_avt_tag.find('img').__getitem__('src')
+            # img_display.display_img(profile_url)
+
+            return {'title': title, 'num_ans': num_ans,
+                    'solution': text.text, 'profile_url': profile_url,
+                    'type': 'solution'}
 
         if parse_page == 'wiki':
             soup = BeautifulSoup(robj.text, 'lxml')
@@ -178,13 +203,18 @@ class Googler:
             texts = full_content_tag.findAll('p')
             for text in texts:
                 if len(text.text) > 100:
-                    return title, text.text
+                    return {'title': title, 'def': text.text, 'type': 'definition'}
 
         if parse_page == 'Accweather':
             soup = BeautifulSoup(robj.text, 'lxml')
 
             weather_info_tag = soup.find('div', {'class': 'page-content content-module'})
             # Current weather
+            forecast_container_tag = weather_info_tag.find('div', {'class': 'forecast-container'})
+            cur_weather_svg = str(forecast_container_tag.find('svg', {'class': 'weather-icon'}))
+            # cur_src_weather_svg = forecast_container_tag.find('svg', {'class': 'weather-icon'})
+
+
             cur_weather_info_tag = weather_info_tag.find('a', {'class': 'cur-con-weather-card card-module content-module lbar-panel'})
             last_update = cur_weather_info_tag.find('p', {'class': 'cur-con-weather-card__subtitle'}).text
             temp = cur_weather_info_tag.find('div', {'class': 'temp'}).text
@@ -210,11 +240,14 @@ class Googler:
 
             weather_info = [[last_update, temp, real_feel_temp, weather_description],
                             [date, aqi_num, air_quality_des, air_quality_statement],
-                            [tomorrow_date, tomorrow_temp, tomorrow_real_feel_temp, tomorrow_weather_description], []]
+                            [tomorrow_date, tomorrow_temp, tomorrow_real_feel_temp, tomorrow_weather_description]]
 
-            return weather_info
+            return {'weather_info': weather_info, 'svg': cur_weather_svg, 'type': 'weather'}
 
         if parse_page == 'pytorch':
+
+            profile_url = None
+
             soup = BeautifulSoup(robj.page_source, 'lxml')
             li_tag = soup.find('li',{'class': 'replies'})
 
@@ -226,18 +259,24 @@ class Googler:
             try:
                 num_ans = int(li_tag.find('span',{'class': 'number'}).text)
             except:
-                return title, num_ans, 'No answer found!'
+                return {'title': title, 'num_ans': num_ans,
+                        'solution': 'No answer found!',
+                        'profile_url': profile_url, 'type': 'solution'}
 
             articles = soup.findAll('article')
             for article in articles:
                 if article.find('span', {'class': 'accepted-text'}) is not None:
                     text = article.find('div', {'class': 'cooked'})
-                    return title, num_ans, text.text
+                    return {'title': title, 'num_ans': num_ans,
+                        'solution': text.text, 'profile_url': profile_url,
+                        'type': 'solution'}
                 else:
                     continue
 
             text = articles[1].find('div', {'class': 'cooked'})
-            return title, num_ans, text.text
+            return {'title': title, 'num_ans': num_ans,
+                    'solution': text.text, 'profile_url': profile_url,
+                    'type': 'solution'}
 
     def search(self, query):
         repobj = self.fetch_search_html(query)
@@ -283,7 +322,7 @@ class Googler:
                 self.parse_page(repobj, parse_page='wiki')
 
             if 'https://www.accuweather.com/' in link and 'hourly-weather-forecast' not in link\
-                    and ' https://translate.google.com/' not in link:
+                    and 'https://translate.google.com/' not in link:
                 print(f"\n\n----- |Result| {idx} -----")
                 print(f"Weather info {link}")
                 repobj = self.fetch_html(page='Accweather',url=link)
