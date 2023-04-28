@@ -4,10 +4,10 @@ from javascript import require
 sys.path.insert(0,r'./') #Add root directory here
 from typing import List
 from bs4 import BeautifulSoup
+from utils.utils import parse_print
+from utils.exception_catcher import exception_catch
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from utils.utils import parse_print
-from requests_ip_rotator import ApiGateway, EXTRA_REGIONS
 img_display = require("../utils/img_display.js")
 
 
@@ -151,6 +151,7 @@ class Googler:
         return featured_ans, href_list
 
     @parse_print
+    @exception_catch
     def parse_page(self, robj, parse_page):
 
         if parse_page == 'stackoverflow' or parse_page == 'stackexchange' \
@@ -181,7 +182,6 @@ class Googler:
             # Find ans avatar
             profile_avt_tag = tag_ans.find('div', {'class': 'gravatar-wrapper-32'})
             profile_url = profile_avt_tag.find('img').__getitem__('src')
-            # img_display.display_img(profile_url)
 
             return {'title': title, 'num_ans': num_ans,
                     'solution': text.text, 'profile_url': profile_url,
@@ -211,9 +211,8 @@ class Googler:
             weather_info_tag = soup.find('div', {'class': 'page-content content-module'})
             # Current weather
             forecast_container_tag = weather_info_tag.find('div', {'class': 'forecast-container'})
-            cur_weather_svg = str(forecast_container_tag.find('svg', {'class': 'weather-icon'}))
-            # cur_src_weather_svg = forecast_container_tag.find('svg', {'class': 'weather-icon'})
-
+            cur_weather_svg_url = str('https://www.accuweather.com'+forecast_container_tag.find('svg', {'class': 'weather-icon'}).__getitem__('data-src'))
+            cur_weather_svg = self.fetch_html(page='Accweather',url=cur_weather_svg_url).text
 
             cur_weather_info_tag = weather_info_tag.find('a', {'class': 'cur-con-weather-card card-module content-module lbar-panel'})
             last_update = cur_weather_info_tag.find('p', {'class': 'cur-con-weather-card__subtitle'}).text
@@ -266,6 +265,7 @@ class Googler:
             articles = soup.findAll('article')
             for article in articles:
                 if article.find('span', {'class': 'accepted-text'}) is not None:
+                    profile_url = 'https://discuss.pytorch.org'+article.find('img', {'class': 'avatar'}).__getitem__('src')
                     text = article.find('div', {'class': 'cooked'})
                     return {'title': title, 'num_ans': num_ans,
                         'solution': text.text, 'profile_url': profile_url,
@@ -273,6 +273,7 @@ class Googler:
                 else:
                     continue
 
+            profile_url = 'https://discuss.pytorch.org'+articles[1].find('img', {'class': 'avatar'}).__getitem__('src')
             text = articles[1].find('div', {'class': 'cooked'})
             return {'title': title, 'num_ans': num_ans,
                     'solution': text.text, 'profile_url': profile_url,
@@ -321,8 +322,8 @@ class Googler:
                 repobj = self.fetch_html(page='wiki',url=link)
                 self.parse_page(repobj, parse_page='wiki')
 
-            if 'https://www.accuweather.com/' in link and 'hourly-weather-forecast' not in link\
-                    and 'https://translate.google.com/' not in link:
+            if 'https://www.accuweather.com/' in link and 'hourly' \
+                and 'daily' and 'translate' not in link:
                 print(f"\n\n----- |Result| {idx} -----")
                 print(f"Weather info {link}")
                 repobj = self.fetch_html(page='Accweather',url=link)
