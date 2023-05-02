@@ -4,8 +4,16 @@ Find anything within your terminal
 Give me a star 🌠 if you find this useful!
 
 ## Install
+
+Have Node 16.X installed.
+Have Python 3.9 installed.
+
 ```shell
+npm install
+
 pip install -r requirements.txt
+
+pyintaller google.spec
 ```
 ## Command
 ```shell
