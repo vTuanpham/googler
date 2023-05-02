@@ -1,37 +1,68 @@
+import sys
+import os
+import pickle
+from cairosvg import svg2png
 from functools import wraps
+sys.path.insert(0,r'./') #Add root directory here
+from javascript import require
+img_display = require("../utils/img_display.mjs")
+
+
+def display_img(img_url=None, svg_code=None, size: float = None):
+
+    size = '100%' if size is None else size
+    if isinstance(size, float):
+        size *= 100
+        size = str(size) + '%'
+
+    if img_url is not None:
+        img_display.display_img(img_url, size, {'method': 'open image from web'})
+        return
+    if svg_code is not None:
+        svg2png(bytestring=svg_code, write_to='./utils/temp_svg.png')
+        img_display.display_img('./utils/temp_svg.png', size, {'method': 'load saved svg image'})
+        os.remove('./utils/temp_svg.png')
+        return
 
 
 def parse_print(func):
     @wraps(func)
     def parse_print_wrapper(*args, **kwargs):
-        try:
-            title, num_ans, parse_page = func(*args, **kwargs)
+        result_dict = func(*args, **kwargs)
+        if result_dict is None:
+            print(f'\n No result found!\n')
+
+            return None
+
+        if result_dict['type'] == 'solution':
+            title = result_dict['title']
+            num_ans = result_dict['num_ans']
+            parse_page = result_dict['solution']
+            img_obj = result_dict['profile_url']
             print(f'\n Problem title: {title}')
             print(f' Number of answer in the discuss: {num_ans}')
             print(f'\n Correct answer: ')
             print('-' * 17)
+            display_img(img_url=img_obj, size=0.4)
             print(f'{parse_page.strip()}')
             print('-' * 17)
 
-            return title, num_ans, parse_page
+            return result_dict
 
-        except ValueError:
-            pass
-
-        try:
-            title, parse_page = func(*args, **kwargs)
+        if result_dict['type'] == 'definition':
+            title = result_dict['title']
+            parse_page = result_dict['def']
             print(f'\n  Definition title: {title}')
             print(f'\n Definition: ')
             print('-' * 17)
             print(f'{parse_page.strip()}')
             print('-' * 17)
 
-            return title, parse_page
-        except ValueError:
-            pass
+            return result_dict
 
-        try:
-            weather_info = func(*args, **kwargs)
+        if result_dict['type'] == 'weather':
+            weather_info = result_dict['weather_info']
+            svg = result_dict['svg']
 
             # Remove unwanted spaces in string
             re_weather_info = []
@@ -47,6 +78,7 @@ def parse_print(func):
             print(f'\n Current weather info on date {weather_info[1][0]}: ')
 
             print('-' * 17)
+            display_img(svg_code=svg, size=0.55)
             cur_weather_info = weather_info[0]
             print(f'Last update: {cur_weather_info[0]}')
             print(f'Current temperature: {cur_weather_info[1]}')
@@ -69,10 +101,7 @@ def parse_print(func):
             print(f'Tomorrow real feel temperature: {tomorrow_weather_info[2]}')
             print(f'Tomorrow weather description: {tomorrow_weather_info[3]}')
             print('-' * 17)
-            return weather_info
-
-        except ValueError:
-            pass
+            return result_dict
 
     return parse_print_wrapper
 

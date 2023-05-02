@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "got": "^12.6.0",
+    "terminal-image":"^2.0.0"
+  },
+  "exports": {
+    "./utils/img_display.js": {
+      "import": "./utils/img_display.mjs",
+      "require": "./utils/img_display.js"
+    },
+    "./javascript/js/*.js": {
+      "require": "./javascript/js/*.js"
+    }
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "files": [
+    "./utils/",
+    "./javascript/"
+  ]
+}
