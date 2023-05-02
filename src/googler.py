@@ -8,7 +8,7 @@ from utils.utils import parse_print
 from utils.exception_catcher import exception_catch
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-img_display = require("../utils/img_display.js")
+img_display = require("../utils/img_display.mjs")
 
 
 class Googler:

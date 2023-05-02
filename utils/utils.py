@@ -3,8 +3,9 @@ import os
 import pickle
 from cairosvg import svg2png
 from functools import wraps
+sys.path.insert(0,r'./') #Add root directory here
 from javascript import require
-img_display = require("../utils/img_display.js")
+img_display = require("../utils/img_display.mjs")
 
 
 def display_img(img_url=None, svg_code=None, size: float = None):
@@ -42,7 +43,7 @@ def parse_print(func):
             print(f' Number of answer in the discuss: {num_ans}')
             print(f'\n Correct answer: ')
             print('-' * 17)
-            display_img(img_url=img_obj, size=0.47)
+            display_img(img_url=img_obj, size=0.4)
             print(f'{parse_page.strip()}')
             print('-' * 17)
 
