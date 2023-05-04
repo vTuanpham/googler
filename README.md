@@ -1,6 +1,6 @@
 # Googler :mag_right:
 ### - Find anything quickly within your terminal :computer:
-### - Quickly debug your code with provided already crawled correct answer from popular coding disscussion form :sunglasses:
+### - Quickly debug your code with provided pre-crawled, correct answer from popular coding disscussion form :sunglasses:
 
 
 #### Give me a star 🌠 if you find this useful!
