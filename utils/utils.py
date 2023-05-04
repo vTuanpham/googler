@@ -43,7 +43,7 @@ def parse_print(func):
             print(f' Number of answer in the discuss: {num_ans}')
             print(f'\n Correct answer: ')
             print('-' * 17)
-            display_img(img_url=img_obj, size=0.4)
+            display_img(img_url=img_obj, size=0.42)
             print(f'{parse_page.strip()}')
             print('-' * 17)
 
