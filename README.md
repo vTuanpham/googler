@@ -8,6 +8,7 @@ Give me a star 🌠 if you find this useful!
 Have Node 16.X installed.
 Have Python 3.9 installed.
 
+
 ```shell
 npm install
 
@@ -15,6 +16,16 @@ pip install -r requirements.txt
 
 pyintaller google.spec
 ```
+
+## Image display example
+#### Display current weather condition
+<img src="https://user-images.githubusercontent.com/82665400/236262216-eaadb75c-68f0-4fe7-8413-33e415d20bae.PNG"  width=75% height=75%>
+
+#### Display profile of user that have the correct answer
+<img src="https://user-images.githubusercontent.com/82665400/236262346-70747901-e975-47cf-8fc5-a5210f4c603f.PNG"  width=75% height=75%>
+
+
+
 ## Command
 ```shell
 usage: google [-h] [--search_engine SEARCH_ENGINE] query
