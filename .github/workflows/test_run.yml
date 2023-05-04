@@ -7,6 +7,8 @@ on:
       - 'src/**.py'
       - 'utils/**.py'
       - 'utils/**.mjs'
+      - '.github/workflows/**.yml'
+      - '**.py'
     branches:
       - 'main'
       - 'dev'
@@ -54,7 +56,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Build application
-        run: pyintaller google.spec
+        run: python3 -m PyInstaller google.spec
 
   test:
     runs-on: ${{ matrix.os }}
@@ -90,6 +92,9 @@ jobs:
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
+
+      - name: Build application
+        run: python3 -m PyInstaller google.spec
 
       - name: Test with unittest
         run: python search_test.py
