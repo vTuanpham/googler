@@ -115,7 +115,7 @@ A wiki (/ˈwɪki/ (listen) WIK-ee) is an online hypertext publication collaborat
  be either open to the public or limited to use within an organization for maintaining its internal knowledge base.
 -----------------
 ```
-#### Finding current weather information
+#### Finding current weather information (readme can't display terminal image :slightly_frowning_face:)
 ```shell
 google "How is the weather in Thu Duc?"
 
@@ -178,7 +178,7 @@ Tomorrow weather description: Some sun with a stray t-storm
 -----------------
 ```
 
-#### Finding solutions from popular coding discussion forums
+#### Finding solutions from popular coding discussion forums (readme can't display terminal image :slightly_frowning_face:)
 
 ```shell
 google "Type error: can't compare between a str and an int"
