@@ -5,10 +5,10 @@ block_cipher = None
 javascript_pkg = []
 
 javascript_pkg += collect_data_files('javascript')
-javascript_pkg += [('.\\node_modules\\', '.\\node_modules')]
-added_files = ('.\\utils\\img_display.mjs', '.\\utils')
+javascript_pkg += [('./node_modules/', './node_modules')]
+added_files = ('./utils/img_display.mjs', './utils')
 javascript_pkg.append(added_files)
-pkg_json = ('.\\package.json', '.')
+pkg_json = ('./package.json', '.')
 
 javascript_pkg.append(pkg_json)
 

@@ -9,6 +9,7 @@ on:
       - 'utils/**.mjs'
       - '.github/workflows/**.yml'
       - '**.py'
+      - 'google.spec'
     branches:
       - 'main'
       - 'dev'
