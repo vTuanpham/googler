@@ -9,7 +9,7 @@ class GoogleTest(unittest.TestCase):
     def test_search_wiki(self):
         # Change the current working directory
         cwd = os.getcwd()
-        result = subprocess.run([".\google.exe", "Facebook"], capture_output=True, cwd=os.path.join(cwd,'dist'), shell=True)
+        result = subprocess.run([".\google.exe", "Facebook", "--debug"], capture_output=True, cwd=os.path.join(cwd,'dist'), shell=True)
         with open('./test_example/Facebook_wiki.txt', 'r') as f:
             facebook_wiki_ref = f.read()
         self.assertIn(facebook_wiki_ref.lower(), str(result.stdout).lower())

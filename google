@@ -8,6 +8,7 @@ def parse_args(args):
     parser = argparse.ArgumentParser(description='Query result from the internet and returning it back')
 
     parser.add_argument('--search_engine', type=str, default='google', help="The search engine to query")
+    parser.add_argument('--debug', action='store_true', help='Enable debugging mode and print errors')
     parser.add_argument('query', type=str, help="Query string")
 
     args = parser.parse_args(args)
@@ -17,7 +18,7 @@ def parse_args(args):
 
 def main(args):
     args = parse_args(args)
-    googler = Googler(search_engine=args.search_engine)
+    googler = Googler(search_engine=args.search_engine, debug_mode=args.debug)
     googler.search(query=args.query)
 
 

@@ -11,10 +11,14 @@ from selenium.webdriver.chrome.options import Options
 img_display = require("../utils/img_display.mjs")
 
 
-class Googler:
-    def __init__(self, search_engine='google'):
-        # Query string parameters to crawl through results pages
+debug_mode_global = False
 
+
+class Googler:
+    def __init__(self, search_engine='google',debug_mode=False):
+        global debug_mode_global
+        debug_mode_global = debug_mode
+        # Query string parameters to crawl through results pages
         self.init_params = {
             'sxsrf': 'ACYBGNRmhZ3C1fo8pX_gW_d8i4gVeu41Bw:1575654668368',
             'ei': 'DJXqXcmDFumxrgSbnYeQBA',
@@ -151,7 +155,7 @@ class Googler:
         return featured_ans, href_list
 
     @parse_print
-    @exception_catch
+    @exception_catch(debug=debug_mode_global)
     def parse_page(self, robj, parse_page):
 
         if parse_page == 'stackoverflow' or parse_page == 'stackexchange' \
@@ -328,6 +332,7 @@ class Googler:
                 print(f"Weather info {link}")
                 repobj = self.fetch_html(page='Accweather',url=link)
                 self.parse_page(repobj, parse_page='Accweather')
+
 
 
 
