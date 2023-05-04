@@ -19,10 +19,10 @@ pyintaller google.spec
 
 ## Image display example
 #### Display current weather condition
-<img src="https://user-images.githubusercontent.com/82665400/236262216-eaadb75c-68f0-4fe7-8413-33e415d20bae.PNG"  width=75% height=75%>
+<img src="https://user-images.githubusercontent.com/82665400/236262216-eaadb75c-68f0-4fe7-8413-33e415d20bae.PNG"  width=82% height=82%>
 
 #### Display profile of user that have the correct answer
-<img src="https://user-images.githubusercontent.com/82665400/236262346-70747901-e975-47cf-8fc5-a5210f4c603f.PNG"  width=75% height=75%>
+<img src="https://user-images.githubusercontent.com/82665400/236262346-70747901-e975-47cf-8fc5-a5210f4c603f.PNG"  width=82% height=82%>
 
 
 
