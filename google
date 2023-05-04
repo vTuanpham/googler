@@ -18,6 +18,8 @@ def parse_args(args):
 
 def main(args):
     args = parse_args(args)
+    if args.debug:
+        print("\n--- Goolger in debug mode ---\n")
     googler = Googler(search_engine=args.search_engine, debug_mode=args.debug)
     googler.search(query=args.query)
 

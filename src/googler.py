@@ -18,6 +18,7 @@ class Googler:
     def __init__(self, search_engine='google',debug_mode=False):
         global debug_mode_global
         debug_mode_global = debug_mode
+        self.debug_mode = debug_mode
         # Query string parameters to crawl through results pages
         self.init_params = {
             'sxsrf': 'ACYBGNRmhZ3C1fo8pX_gW_d8i4gVeu41Bw:1575654668368',
@@ -286,6 +287,10 @@ class Googler:
     def search(self, query):
         repobj = self.fetch_search_html(query)
         featured_ans, links = self.parse_url(repobj)
+        if self.debug_mode:
+            print('--- Retrieved links to crawl ---')
+            for link in links:
+                print(link)
         if featured_ans is not None:
             print(f'\nFeatured answer: {featured_ans}')
 
