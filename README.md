@@ -17,18 +17,9 @@ pip install -r requirements.txt
 pyintaller google.spec
 ```
 
-## Image display example
-#### Display current weather condition
-<img src="https://user-images.githubusercontent.com/82665400/236262216-eaadb75c-68f0-4fe7-8413-33e415d20bae.PNG"  width=82% height=82%>
-
-#### Display profile of user that have the correct answer
-<img src="https://user-images.githubusercontent.com/82665400/236262346-70747901-e975-47cf-8fc5-a5210f4c603f.PNG"  width=82% height=82%>
-
-
-
 ## Command
 ```shell
-usage: google [-h] [--search_engine SEARCH_ENGINE] query
+usage: google.exe [-h] [--search_engine SEARCH_ENGINE] [--debug] query
 
 Query result from the internet and returning it back
 
@@ -39,11 +30,18 @@ options:
   -h, --help            show this help message and exit
   --search_engine SEARCH_ENGINE
                         The search engine to query
+  --debug               Enable debugging mode and print errors
 ```
 
-
-
 ### Usage:
+
+## Image display examples
+#### Display current weather condition
+<img src="https://user-images.githubusercontent.com/82665400/236262216-eaadb75c-68f0-4fe7-8413-33e415d20bae.PNG"  width=82% height=82%>
+
+#### Display profile of user that have the correct answer
+<img src="https://user-images.githubusercontent.com/82665400/236262346-70747901-e975-47cf-8fc5-a5210f4c603f.PNG"  width=82% height=82%>
+
 #### Finding definition
 ```shell
 google "Facebook"
