@@ -5,8 +5,8 @@ Give me a star 🌠 if you find this useful!
 
 ## Install
 
-Have Node 16.X installed.
-Have Python 3.9 installed.
+- Have [Node 16.X](https://nodejs.org/es/download/releases) installed.
+- Have [Python 3.9](https://www.python.org/downloads/release/python-390/) installed.
 
 
 ```shell
