@@ -18,20 +18,25 @@ class GoogleTest(unittest.TestCase):
 
         result, err = process.communicate()
 
+        if process.returncode != 0:
+            raise Exception("File handling failed %d %s %s" % (process.returncode, result, err))
+
         with open('./test_example/python_help.txt', 'r') as f:
             help_ref = f.read()
         self.assertEqual(help_ref.lower(), str(result).lower())
 
-    def test_search_wiki(self):
+    def test_code_search_wiki(self):
         # Change the current working directory
         cwd = os.getcwd()
-        print(cwd)
         process = subprocess.Popen(["python", "google", "Facebook"],
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE,
                                        shell=True)
 
         result, err = process.communicate()
+
+        if process.returncode != 0:
+            raise Exception("File handling failed %d %s %s" % (process.returncode, result, err))
 
         with open('./test_example/Facebook_wiki.txt', 'r') as f:
             help_ref = f.read()
@@ -40,13 +45,15 @@ class GoogleTest(unittest.TestCase):
     def test_build_success(self):
         # Change the current working directory
         cwd = os.getcwd()
-        print(cwd)
         process = subprocess.Popen(["google.exe", "--help"],
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE,
                                        cwd=os.path.join(cwd,'dist'), shell=True)
 
         result, err = process.communicate()
+
+        if process.returncode != 0:
+            raise Exception("File handling failed %d %s %s" % (process.returncode, result, err))
 
         with open('./test_example/help.txt', 'r') as f:
             help_ref = f.read()
@@ -55,13 +62,15 @@ class GoogleTest(unittest.TestCase):
     def test_search_wiki(self):
         # Change the current working directory
         cwd = os.getcwd()
-        print(cwd)
         process = subprocess.Popen(["google.exe", "Facebook", "--debug"],
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE,
                                        cwd=os.path.join(cwd,'dist'), shell=True)
 
         result, err = process.communicate()
+
+        if process.returncode != 0:
+            raise Exception("File handling failed %d %s %s" % (process.returncode, result, err))
 
         with open('./test_example/Facebook_wiki.txt', 'r') as f:
             facebook_wiki_ref = f.read()

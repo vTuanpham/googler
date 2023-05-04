@@ -37,7 +37,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Install node dependencies
         run: npm install
 
       - name: Cache npm dependencies
@@ -54,7 +54,9 @@ jobs:
           cache: 'pip' # caching pip dependencies
 
       - name: Install Python dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Cache pip dependencies
         uses: actions/cache@v2
@@ -63,8 +65,8 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: ${{ runner.os }}-pip-
 
-      - name: Build application
-        run: python3 -m PyInstaller google.spec
+      - name: Build and test application
+        run: | 
+          python3 -m PyInstaller google.spec
+          python3 search_test.py
 
-      - name: Test with unittest
-        run: python search_test.py
