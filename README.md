@@ -1,12 +1,15 @@
-# Googler
-Find anything within your terminal
+# Googler :mag_right:
+### - Find anything quickly within your terminal :computer:
+### - Quickly debug your code with provided pre-crawled, correct answer from popular coding disscussion form :sunglasses:
 
-Give me a star 🌠 if you find this useful!
+
+#### Give me a star 🌠 if you find this useful!
 
 ## Install
 
-Have Node 16.X installed.
-Have Python 3.9 installed.
+- Have [Node 16.X](https://nodejs.org/es/download/releases) installed.
+- Have [Python 3.9](https://www.python.org/downloads/release/python-390/) installed.
+
 
 ```shell
 npm install
@@ -15,9 +18,10 @@ pip install -r requirements.txt
 
 pyintaller google.spec
 ```
+
 ## Command
 ```shell
-usage: google [-h] [--search_engine SEARCH_ENGINE] query
+usage: google.exe [-h] [--search_engine SEARCH_ENGINE] [--debug] query
 
 Query result from the internet and returning it back
 
@@ -28,11 +32,18 @@ options:
   -h, --help            show this help message and exit
   --search_engine SEARCH_ENGINE
                         The search engine to query
+  --debug               Enable debugging mode and print errors
 ```
 
-
-
 ### Usage:
+
+## Image display examples
+#### Display current weather condition
+<img src="https://user-images.githubusercontent.com/82665400/236262216-eaadb75c-68f0-4fe7-8413-33e415d20bae.PNG"  width=82% height=82%>
+
+#### Display profile of user that have the correct answer
+<img src="https://user-images.githubusercontent.com/82665400/236262346-70747901-e975-47cf-8fc5-a5210f4c603f.PNG"  width=82% height=82%>
+
 #### Finding definition
 ```shell
 google "Facebook"
@@ -104,7 +115,7 @@ A wiki (/ˈwɪki/ (listen) WIK-ee) is an online hypertext publication collaborat
  be either open to the public or limited to use within an organization for maintaining its internal knowledge base.
 -----------------
 ```
-#### Finding current weather information
+#### Finding current weather information (readme can't display terminal image :slightly_frowning_face:)
 ```shell
 google "How is the weather in Thu Duc?"
 
@@ -167,7 +178,7 @@ Tomorrow weather description: Some sun with a stray t-storm
 -----------------
 ```
 
-#### Finding solutions from popular coding discussion forums
+#### Finding solutions from popular coding discussion forums (readme can't display terminal image :slightly_frowning_face:)
 
 ```shell
 google "Type error: can't compare between a str and an int"
