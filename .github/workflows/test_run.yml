@@ -65,8 +65,14 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: ${{ runner.os }}-pip-
 
-      - name: Build and test application
+      - name: Build application
         run: | 
           python3 -m PyInstaller google.spec
-          python3 search_test.py
+
+      - name: List files
+        run: ls
+
+      - name: Test
+        run: python3 search_test.py
+
 

@@ -1,6 +1,7 @@
 import sys
 import os
 import pickle
+import tempfile
 from cairosvg import svg2png
 from functools import wraps
 sys.path.insert(0,r'./') #Add root directory here
@@ -19,10 +20,11 @@ def display_img(img_url=None, svg_code=None, size: float = None):
         img_display.display_img(img_url, size, {'method': 'open image from web'})
         return
     if svg_code is not None:
-        svg2png(bytestring=svg_code, write_to='./utils/temp_svg.png')
-        img_display.display_img('./utils/temp_svg.png', size, {'method': 'load saved svg image'})
-        os.remove('./utils/temp_svg.png')
-        return
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = os.path.join(temp_dir ,'temp_svg.png')
+            svg2png(bytestring=svg_code, write_to=temp_path)
+            img_display.display_img(temp_path, size, {'method': 'load saved svg image'})
+            return
 
 
 def parse_print(func):
