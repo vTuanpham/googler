@@ -6,3 +6,4 @@ javascript
 pipwin
 cairocffi
 pyinstaller
+rich

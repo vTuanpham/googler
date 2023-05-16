@@ -1,4 +1,5 @@
-import traceback
+from rich.console import Console
+console = Console()
 
 
 def exception_catch(debug=False):
@@ -9,7 +10,7 @@ def exception_catch(debug=False):
                 return result_dict
             except Exception as e:
                 if debug:
-                    traceback.print_tb(e.__traceback__)
+                    console.print_exception(show_locals=True)
                 return None
 
         return exception_catch_wrapper

@@ -4,9 +4,11 @@ import pickle
 import tempfile
 from cairosvg import svg2png
 from functools import wraps
+from rich.console import Console
 sys.path.insert(0,r'./') #Add root directory here
 from javascript import require
 img_display = require("../utils/img_display.mjs")
+console = Console()
 
 
 def display_img(img_url=None, svg_code=None, size: float = None):
@@ -32,7 +34,7 @@ def parse_print(func):
     def parse_print_wrapper(*args, **kwargs):
         result_dict = func(*args, **kwargs)
         if result_dict is None:
-            print(f'\n No result found!\n')
+            console.print(f'\n [u]No result found![/u]\n', style="bold red")
 
             return None
 
