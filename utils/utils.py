@@ -2,13 +2,55 @@ import sys
 import os
 import pickle
 import tempfile
-from cairosvg import svg2png
+import time
+from typing import List
 from functools import wraps
+from contextlib import contextmanager
+
+from cairosvg import svg2png
+
+from rich import box
+from rich.align import Align
 from rich.console import Console
-sys.path.insert(0,r'./') #Add root directory here
+from rich.live import Live
+from rich.table import Table
+from rich.text import Text
+
 from javascript import require
+sys.path.insert(0,r'./') #Add root directory here
 img_display = require("../utils/img_display.mjs")
 console = Console()
+
+
+BEAT_TIME = 0.04
+
+@contextmanager
+def beat(length: int = 1) -> None:
+    yield
+    time.sleep(length * BEAT_TIME)
+
+
+def generate_table(TABLE_DATA):
+    table = Table(show_footer=False, box=box.HEAVY_EDGE)
+    table_centered = Align.center(table)
+    with Live(table_centered, console=console, screen=False, refresh_per_second=5):
+        with beat(10):
+            table.title = "Retrieved links to crawl"
+
+        with beat(10):
+            table.title = (
+                "[bold green] Retrieved links to crawl [/bold green]"
+            )
+
+        with beat(2):
+            table.add_column("Num", no_wrap=True)
+
+        with beat(2):
+            table.add_column("[bold blue] Links [/bold blue]", no_wrap=True)
+
+        for row in TABLE_DATA:
+            with beat(5):
+                table.add_row(*row)
 
 
 def display_img(img_url=None, svg_code=None, size: float = None):
@@ -27,6 +69,22 @@ def display_img(img_url=None, svg_code=None, size: float = None):
             svg2png(bytestring=svg_code, write_to=temp_path)
             img_display.display_img(temp_path, size, {'method': 'load saved svg image'})
             return
+
+
+def markdown_print(msg: str, mark_downs: List[str]):
+
+    from rich.console import Console
+    console = Console()
+
+    style = {
+        "underline": f"[u] {temp_msg} [/u]",
+        "italic": f"[i] {temp_msg} [/i]",
+        "bold red": f"[{mark_down}] {temp_msg} [/{mark_down}]"
+    }
+
+
+    console.print()
+    console.print(f'\n [u]No result found![/u]\n', style="bold red")
 
 
 def parse_print(func):

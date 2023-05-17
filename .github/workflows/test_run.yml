@@ -74,6 +74,9 @@ jobs:
       - name: List files
         run: ls
 
+      - name: Check exe in dist
+        run: ls dist
+
       - name: Test
         run: python3 -u -m unittest search_test.py
 

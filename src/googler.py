@@ -1,14 +1,20 @@
 import sys
-import requests
-from javascript import require
-sys.path.insert(0,r'./') #Add root directory here
 from typing import List
+import requests
 from bs4 import BeautifulSoup
-from rich.console import Console
-from utils.utils import parse_print
-from utils.exception_catcher import exception_catch
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+
+from rich.console import Console
+from rich.syntax import Syntax
+
+from utils.utils import parse_print
+from utils.utils import markdown_print
+from utils.utils import generate_table
+from utils.exception_catcher import exception_catch
+
+from javascript import require
+sys.path.insert(0,r'./') #Add root directory here
 img_display = require("../utils/img_display.mjs")
 console = Console()
 
@@ -99,6 +105,10 @@ class Googler:
             return browser
 
         response = requests.get(url=url, params=params, headers=headers, proxies=proxy)
+
+        if self.debug_mode:
+            syntax = Syntax(response.text, "html", theme="monokai", line_numbers=True)
+            console.print(syntax)
 
         return response
 
@@ -288,16 +298,28 @@ class Googler:
     def search(self, query):
         with console.status("[bold green]Fetching results...", spinner='aesthetic') as status:
             repobj = self.fetch_search_html(query)
-            featured_ans, links = self.parse_url(repobj)
-        if self.debug_mode:
-            print('--- Retrieved links to crawl ---')
+            if repobj is not None:
+                featured_ans, links = self.parse_url(repobj)
+            else:
+                markdown_print('t','t')
+        table_data = []
+        i = 0
+        if len(links) > 0:
             for link in links:
-                print(link)
+                i+=1
+                table_data.append([str(i),link])
+            generate_table(table_data)
+        else:
+            markdown_print('t','t')
+            if self.debug_mode:
+                syntax = Syntax(repobj.text, "html", theme="monokai", line_numbers=True)
+                console.print(syntax)
         if featured_ans is not None:
             print(f'\nFeatured answer: {featured_ans}')
 
         with console.status("[bold green]Crawling results...", spinner='aesthetic') as status:
-            for idx, link in enumerate(links):
+            for index, link in enumerate(links):
+                idx = index+1
                 if 'https://stackoverflow.com/' in link:
                     print(f"\n\n----- |Result| {idx} -----")
                     print(f"Solution in {link}")
