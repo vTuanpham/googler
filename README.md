@@ -2,7 +2,8 @@
 ### - Find anything quickly within your terminal :computer:
 ### - Quickly debug your code with provided pre-crawled, correct answer from popular coding disscussion form :sunglasses:
 
-[screen-recorder-wed-may-17-2023-16-11-02.webm](https://github.com/vTuanpham/googler/assets/82665400/d3feef7e-d180-463f-adaa-234cd858047e)
+[screen-recorder-wed-may-17-2023-16-11-02.webm](https://github.com/vTuanpham/googler/assets/82665400/a90479b1-7041-407c-a0bc-3a9c2831b58b)
+
 
 #### Give me a star 🌠 if you find this useful!
 
