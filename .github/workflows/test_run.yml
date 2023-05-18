@@ -81,7 +81,8 @@ jobs:
       - name: change dir and run exe file
         run: |
           cd dist
-          ./google "Wiki" 
+          ./google --help 
+          ./google "Hello world"
 
       - name: Test
         run: python3 -u -m unittest search_test.py
