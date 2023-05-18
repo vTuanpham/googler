@@ -7,3 +7,4 @@ pipwin
 cairocffi
 pyinstaller
 rich
+lxml
