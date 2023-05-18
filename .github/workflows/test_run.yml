@@ -78,7 +78,7 @@ jobs:
         run: ls dist
 
       -name: change dir and run exe file
-      -run: |
+       run: |
         cd dist
         google.exe "Wiki" 
 
