@@ -1,6 +1,8 @@
 <p align="center">
-  <img src="https://github.com/vTuanpham/googler/assets/82665400/ab905425-ae88-4a40-a3f1-11d8c76810fa" width=27% height=27%> :mag_right:
+  <img src="https://github.com/vTuanpham/googler/assets/82665400/ab905425-ae88-4a40-a3f1-11d8c76810fa" width=27% height=27%> 
+  :mag_right:
 </p>
+
 ### - Find anything quickly within your terminal :computer:
 ### - Quickly debug your code with provided pre-crawled, correct answer from popular coding disscussion form :sunglasses:
 
