@@ -80,7 +80,7 @@ jobs:
       - name: change dir and run exe file
         run: |
           cd dist
-          google.exe "Wiki" 
+          start google "Wiki" 
 
       - name: Test
         run: python3 -u -m unittest search_test.py
