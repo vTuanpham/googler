@@ -18,13 +18,13 @@ sys.path.insert(0,r'./') #Add root directory here
 img_display = require("../utils/img_display.mjs")
 console = Console()
 
-debug_mode_global = False
+DEBUG_MODE = False
 
 
 class Googler:
     def __init__(self, search_engine='google',debug_mode=False):
-        global debug_mode_global
-        debug_mode_global = debug_mode
+        global DEBUG_MODE
+        DEBUG_MODE = debug_mode
         self.debug_mode = debug_mode
         # Query string parameters to crawl through results pages
         self.init_params = {
@@ -167,7 +167,7 @@ class Googler:
         return featured_ans, href_list
 
     @parse_print
-    @exception_catch(debug=debug_mode_global)
+    @exception_catch(debug=DEBUG_MODE)
     def parse_page(self, robj, parse_page):
 
         if parse_page == 'stackoverflow' or parse_page == 'stackexchange' \

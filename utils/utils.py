@@ -23,6 +23,10 @@ console = Console()
 
 
 BEAT_TIME = 0.04
+GOOGLE_MARKDOWN = "[bold blue] G[/bold blue][bold red]o[/bold red]" \
+                  "[bold yellow]o[/bold yellow][bold blue]g[/bold blue]" \
+                  "[bold green]l[/bold green][bold red]e[/bold red]"
+
 
 @contextmanager
 def beat(length: int = 1) -> None:
@@ -30,16 +34,16 @@ def beat(length: int = 1) -> None:
     time.sleep(length * BEAT_TIME)
 
 
-def generate_table(TABLE_DATA):
+def generate_table(table_data: List[List]):
     table = Table(show_footer=False, box=box.HEAVY_EDGE)
     table_centered = Align.center(table)
-    with Live(table_centered, console=console, screen=False, refresh_per_second=5):
+    with Live(table_centered, console=console, screen=False, refresh_per_second=20):
         with beat(10):
-            table.title = "Retrieved links to crawl"
+            table.title = f"{GOOGLE_MARKDOWN}\nRetrieved links to crawl"
 
         with beat(10):
             table.title = (
-                "[bold green] Retrieved links to crawl [/bold green]"
+                f"{GOOGLE_MARKDOWN}\n[bold green] Retrieved links to crawl [/bold green]"
             )
 
         with beat(2):
@@ -48,7 +52,7 @@ def generate_table(TABLE_DATA):
         with beat(2):
             table.add_column("[bold blue] Links [/bold blue]", no_wrap=True)
 
-        for row in TABLE_DATA:
+        for row in table_data:
             with beat(5):
                 table.add_row(*row)
 
