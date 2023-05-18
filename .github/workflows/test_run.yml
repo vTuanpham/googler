@@ -77,10 +77,10 @@ jobs:
       - name: Check exe in dist
         run: ls dist
 
-      -name: change dir and run exe file
-       run: |
-        cd dist
-        google.exe "Wiki" 
+      - name: change dir and run exe file
+        run: |
+          cd dist
+          google.exe "Wiki" 
 
       - name: Test
         run: python3 -u -m unittest search_test.py
