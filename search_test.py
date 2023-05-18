@@ -40,7 +40,7 @@ class GoogleTest(unittest.TestCase):
     def test_build_success(self):
         # Change the current working directory
         cwd = os.getcwd()
-        process = subprocess.Popen(["google.exe", "--help"],
+        process = subprocess.Popen(["./google", "--help"],
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE,
                                        cwd=os.path.join(cwd,'dist'), shell=True)
@@ -57,7 +57,7 @@ class GoogleTest(unittest.TestCase):
     def test_search_wiki(self):
         # Change the current working directory
         cwd = os.getcwd()
-        process = subprocess.Popen(["google.exe", "Facebook"],
+        process = subprocess.Popen(["./google", "Facebook"],
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE,
                                        cwd=os.path.join(cwd,'dist'), shell=True)
