@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "got": "^12.6.0",
-    "terminal-image":"^2.0.0"
+    "terminal-image": "^2.0.0",
+    "terminal-kit": "^3.0.0"
   },
   "exports": {
     "./utils/img_display.js": {

@@ -317,51 +317,51 @@ class Googler:
         if featured_ans is not None:
             print(f'\nFeatured answer: {featured_ans}')
 
-        with console.status("[bold green]Crawling results...", spinner='aesthetic') as status:
-            for index, link in enumerate(links):
-                idx = index+1
-                if 'https://stackoverflow.com/' in link:
-                    print(f"\n\n----- |Result| {idx} -----")
-                    print(f"Solution in {link}")
-                    repobj = self.fetch_html(page='stackoverflow',url=link)
-                    self.parse_page(repobj, parse_page='stackoverflow')
+        # with console.status("[bold green]Crawling results...", spinner='aesthetic') as status:
+        for index, link in enumerate(links):
+            idx = index+1
+            if 'https://stackoverflow.com/' in link:
+                print(f"\n\n----- |Result| {idx} -----")
+                print(f"Solution in {link}")
+                repobj = self.fetch_html(page='stackoverflow',url=link)
+                self.parse_page(repobj, parse_page='stackoverflow')
 
-                if 'https://academia.stackexchange.com/' in link:
-                    print(f"\n\n----- |Result| {idx} -----")
-                    print(f"Solution in {link}")
-                    repobj = self.fetch_html(page='stackexchange',url=link)
-                    self.parse_page(repobj, parse_page='stackexchange')
+            if 'https://academia.stackexchange.com/' in link:
+                print(f"\n\n----- |Result| {idx} -----")
+                print(f"Solution in {link}")
+                repobj = self.fetch_html(page='stackexchange',url=link)
+                self.parse_page(repobj, parse_page='stackexchange')
 
-                if 'https://codegolf.stackexchange.com/' in link:
-                    print(f"\n\n----- |Result| {idx} -----")
-                    print(f"Solution in {link}")
-                    repobj = self.fetch_html(page='codegolf_stackexchange',url=link)
-                    self.parse_page(repobj, parse_page='codegolf_stackexchange')
+            if 'https://codegolf.stackexchange.com/' in link:
+                print(f"\n\n----- |Result| {idx} -----")
+                print(f"Solution in {link}")
+                repobj = self.fetch_html(page='codegolf_stackexchange',url=link)
+                self.parse_page(repobj, parse_page='codegolf_stackexchange')
 
-                if 'https://math.stackexchange.com/' in link:
-                    print(f"\n\n----- |Result| {idx} -----")
-                    print(f"Solution in {link}")
-                    repobj = self.fetch_html(page='math_stackexchange',url=link)
-                    self.parse_page(repobj, parse_page='math_stackexchange')
+            if 'https://math.stackexchange.com/' in link:
+                print(f"\n\n----- |Result| {idx} -----")
+                print(f"Solution in {link}")
+                repobj = self.fetch_html(page='math_stackexchange',url=link)
+                self.parse_page(repobj, parse_page='math_stackexchange')
 
-                if 'https://discuss.pytorch.org/' in link:
-                    print(f"\n\n----- |Result| {idx} -----")
-                    print(f"Solution in {link}")
-                    repobj = self.fetch_html(page='pytorch',url=link)
-                    self.parse_page(repobj, parse_page='pytorch')
+            if 'https://discuss.pytorch.org/' in link:
+                print(f"\n\n----- |Result| {idx} -----")
+                print(f"Solution in {link}")
+                repobj = self.fetch_html(page='pytorch',url=link)
+                self.parse_page(repobj, parse_page='pytorch')
 
-                if 'https://en.wikipedia.org/' in link:
-                    print(f"\n\n----- |Result| {idx} -----")
-                    print(f"Definition in {link}")
-                    repobj = self.fetch_html(page='wiki',url=link)
-                    self.parse_page(repobj, parse_page='wiki')
+            if 'https://en.wikipedia.org/' in link:
+                print(f"\n\n----- |Result| {idx} -----")
+                print(f"Definition in {link}")
+                repobj = self.fetch_html(page='wiki',url=link)
+                self.parse_page(repobj, parse_page='wiki')
 
-                if 'https://www.accuweather.com/' in link and 'hourly' \
-                    and 'daily' and 'translate' not in link:
-                    print(f"\n\n----- |Result| {idx} -----")
-                    print(f"Weather info {link}")
-                    repobj = self.fetch_html(page='Accweather',url=link)
-                    self.parse_page(repobj, parse_page='Accweather')
+            if 'https://www.accuweather.com/' in link and 'hourly' \
+                and 'daily' and 'translate' not in link:
+                print(f"\n\n----- |Result| {idx} -----")
+                print(f"Weather info {link}")
+                repobj = self.fetch_html(page='Accweather',url=link)
+                self.parse_page(repobj, parse_page='Accweather')
 
 
 
