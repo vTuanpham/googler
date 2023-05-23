@@ -1,6 +1,7 @@
 import terminalImage from 'terminal-image';
 import got from 'got';
 
+
 export async function display_img(url, size, opts) {
     if (opts['method'] == 'open image from web') {
         const body = await got(url).buffer();

@@ -8,11 +8,10 @@ def exception_catch(debug=False):
             try:
                 result_dict = func(*args, **kwargs)
                 return result_dict
-            except Exception as e:
+            except Exception:
                 if debug:
                     console.print_exception(show_locals=True)
                 return None
-
         return exception_catch_wrapper
     return wrap
 
