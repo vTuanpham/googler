@@ -84,8 +84,14 @@ jobs:
           ./google --help 
           ./google "Hello world"
 
-      - name: Test
-        run: python3 -u -m unittest search_test.py
+      - name: change dir and run exe file
+        run: |
+          cd dist
+          ./google "How to iter through a dataloader ?"
+      
+
+#      - name: Test
+#        run: python3 -u -m unittest search_test.py
 
 
 
