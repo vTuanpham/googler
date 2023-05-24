@@ -121,7 +121,8 @@ def parse_print(func):
             if isinstance(parse_page, Sequence) and not isinstance(parse_page, str):
                 for e in parse_page:
                     if isinstance(e, tuple) and not isinstance(parse_page, str):
-                        syntax = Syntax(code=e[0], lexer=e[1], theme="monokai", line_numbers=True)
+                        syntax = Syntax(code=e[0], lexer=e[1] if e[1] != 'unknown' else None,
+                                        theme="monokai", line_numbers=True)
                         console.print(syntax)
                     else:
                         console.print(e.strip())

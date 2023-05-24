@@ -1,4 +1,5 @@
 import sys
+import warnings
 from typing import List
 import requests
 import re
@@ -182,6 +183,48 @@ class Googler:
     @exception_catch(debug=DEBUG_MODE)
     def parse_page(self, robj, parse_page):
 
+        def parse_coding_form(ans_body_obj, page_type='stack') -> List:
+            all_body_elements = ans_body_obj.findChildren(recursive=False)
+            form_structure = []
+            for e in all_body_elements:
+                if page_type == 'stack':
+                    condition_check = (e.has_attr('class') and 's-code-block' in e['class'], )
+                    if condition_check[0]:
+                        condition_check += (e.find('code').has_attr('class'), )
+
+                if page_type == 'pytorch':
+                    condition_check = (e.name == 'pre', )
+                    if condition_check[0]:
+                        condition_check += (True, )
+                if condition_check[0]:
+                    if condition_check[1] and page_type == 'stack':
+                        lang = e.find('code')['class'][1]
+                    elif condition_check[1] and page_type == 'pytorch':
+                        lang = e.find('code')['class'][2]
+                    else:
+                        warnings.warn("Unknown lang")
+                        code_block = (e.text, 'unknown')
+                        form_structure.append(code_block)
+                        continue
+
+                    regex = r'language-(\w+)'
+                    match = re.search(regex, lang)
+
+                    if match:
+                        extracted_lang = match.group(1)
+                        code_block = (e.text, extracted_lang)
+                        form_structure.append(code_block)
+                        if self.debug_mode:
+                            print("Crawl language name: ", extracted_lang)
+                    else:
+                        warnings.warn("Unknown lang")
+                        code_block = (e.text, 'unknown')
+                        form_structure.append(code_block)
+                else:
+                    form_structure.append(e.text)
+
+            return form_structure
+
         if parse_page == 'stackoverflow' or parse_page == 'stackexchange' \
                 or parse_page == 'codegolf_stackexchange' or parse_page == 'math_stackexchange':
             soup = BeautifulSoup(robj.page_source, 'lxml')
@@ -207,23 +250,13 @@ class Googler:
                 tag_ans = soup.find('div', {'class': 'answer js-answer'})
             body_ans = tag_ans.find('div', {'class': 's-prose js-post-body'})
 
-            all_body_elements = body_ans.findChildren(recursive=False)
-            form_structure = []
-            for e in all_body_elements:
-                if e.has_attr('class') and 's-code-block' in e['class']:
-                    lang = e.find('code')['class'][1]
+            if self.debug_mode:
+                print("Extracted answer: ", body_ans.text)
 
-                    regex = r'language-(\w+)'
-                    match = re.search(regex, lang)
+            form_structure = parse_coding_form(body_ans, page_type='stack')
 
-                    if match:
-                        extracted_lang = match.group(1)
-                        code_block = (e.text, extracted_lang)
-                        form_structure.append(code_block)
-                    else:
-                        raise "Unknown lang err"
-                else:
-                    form_structure.append(e.text)
+            if self.debug_mode:
+                print("Extracted form answer: ", form_structure)
 
             # Find ans avatar
             profile_avt_tag = tag_ans.find('div', {'class': 'gravatar-wrapper-32'})
@@ -314,24 +347,13 @@ class Googler:
                     profile_url = 'https://discuss.pytorch.org'+article.find('img', {'class': 'avatar'}).__getitem__('src')
                     body_ans = article.find('div', {'class': 'cooked'})
 
-                    all_body_elements = body_ans.findChildren(recursive=False)
-                    form_structure = []
-                    for e in all_body_elements:
-                        if e.name == 'pre':
-                            lang = e.find('code')['class'][2]
+                    if self.debug_mode:
+                        print("Extracted answer: ", body_ans.text)
 
-                            regex = r'language-(\w+)'
-                            match = re.search(regex, lang)
+                    form_structure = parse_coding_form(body_ans, page_type='pytorch')
 
-                            if match:
-                                extracted_lang = match.group(1)
-                                code_block = (e.text, extracted_lang)
-                                form_structure.append(code_block)
-                            else:
-                                raise "Unknown lang err"
-                        else:
-                            form_structure.append(e.text)
-
+                    if self.debug_mode:
+                        print("Extracted form answer: ", form_structure)
 
                     return {'title': title, 'num_ans': num_ans,
                         'solution': form_structure, 'profile_url': profile_url,
@@ -342,23 +364,13 @@ class Googler:
             profile_url = 'https://discuss.pytorch.org'+articles[1].find('img', {'class': 'avatar'}).__getitem__('src')
             body_ans = articles[1].find('div', {'class': 'cooked'})
 
-            all_body_elements = body_ans.findChildren(recursive=False)
-            form_structure = []
-            for e in all_body_elements:
-                if e.name == 'pre':
-                    lang = e.find('code')['class'][2]
+            if self.debug_mode:
+                print("Extracted answer: ", body_ans.text)
 
-                    regex = r'language-(\w+)'
-                    match = re.search(regex, lang)
+            form_structure = parse_coding_form(body_ans, page_type='pytorch')
 
-                    if match:
-                        extracted_lang = match.group(1)
-                        code_block = (e.text, extracted_lang)
-                        form_structure.append(code_block)
-                    else:
-                        raise "Unknown lang err"
-                else:
-                    form_structure.append(e.text)
+            if self.debug_mode:
+                print("Extracted form answer: ", form_structure)
 
             return {'title': title, 'num_ans': num_ans,
                     'solution': form_structure, 'profile_url': profile_url,
