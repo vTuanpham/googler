@@ -16,7 +16,6 @@ from utils.exception_catcher import exception_catch
 
 from javascript import require
 sys.path.insert(0,r'./') #Add root directory here
-img_display = require("../utils/img_display.mjs")
 console = Console()
 
 DEBUG_MODE = False

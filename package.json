@@ -9,6 +9,10 @@
       "import": "./utils/img_display.mjs",
       "require": "./utils/img_display.js"
     },
+    "./utils/generate_text.js": {
+      "import": "./utils/generate_text.mjs",
+      "require": "./utils/generate_text.js"
+    },
     "./javascript/js/*.js": {
       "require": "./javascript/js/*.js"
     }
