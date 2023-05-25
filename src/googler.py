@@ -19,7 +19,7 @@ from javascript import require
 sys.path.insert(0,r'./') #Add root directory here
 console = Console()
 
-DEBUG_MODE = False
+DEBUG_MODE = True
 
 
 class Googler:
@@ -227,7 +227,8 @@ class Googler:
 
         if parse_page == 'stackoverflow' or parse_page == 'stackexchange' \
                 or parse_page == 'codegolf_stackexchange' or parse_page == 'math_stackexchange':
-            soup = BeautifulSoup(robj.page_source, 'lxml')
+            soup = BeautifulSoup(markup=robj.page_source if hasattr(robj, 'page_source')
+                                else robj.text, features='lxml')
 
             profile_url = None
 
