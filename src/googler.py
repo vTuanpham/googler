@@ -19,7 +19,7 @@ from javascript import require
 sys.path.insert(0,r'./') #Add root directory here
 console = Console()
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 
 class Googler:
