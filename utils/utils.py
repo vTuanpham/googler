@@ -1,8 +1,10 @@
 import sys
 import os
+import threading
 import pickle
 import tempfile
 import time
+from collections.abc import Sequence
 from typing import List
 from functools import wraps
 from contextlib import contextmanager
@@ -15,6 +17,7 @@ from rich.console import Console
 from rich.live import Live
 from rich.table import Table
 from rich.text import Text
+from rich.syntax import Syntax
 
 from javascript import require
 sys.path.insert(0,r'./') #Add root directory here
@@ -108,14 +111,23 @@ def parse_print(func):
             num_ans = result_dict['num_ans']
             parse_page = result_dict['solution']
             img_obj = result_dict['profile_url']
-            text_generator.generate_text(f'\n Problem title: {title}', 15)
-            time.sleep(10)
+            title = f'\n Problem title: {title}'
+            text_generator.generate_text(title, 15)
+            time.sleep(len(title)*0.08)
             print(f' Number of answer in the discuss: {num_ans}')
             print(f'\n Correct answer: ')
             print('-' * 17)
             display_img(img_url=img_obj, size=0.42)
-            text_generator.generate_text(f'{parse_page.strip()}', 8)
-            time.sleep(50)
+            if isinstance(parse_page, Sequence) and not isinstance(parse_page, str):
+                for e in parse_page:
+                    if isinstance(e, tuple) and not isinstance(parse_page, str):
+                        syntax = Syntax(code=e[0], lexer=e[1] if e[1] != 'unknown' else None,
+                                        theme="monokai", line_numbers=True)
+                        console.print(syntax)
+                    else:
+                        console.print(e.strip())
+            else:
+                print(f'{parse_page.strip()}')
             print('-' * 17)
 
             return result_dict

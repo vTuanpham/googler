@@ -1,6 +1,8 @@
 import sys
+import warnings
 from typing import List
 import requests
+import re
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -15,7 +17,6 @@ from utils.exception_catcher import exception_catch
 
 from javascript import require
 sys.path.insert(0,r'./') #Add root directory here
-img_display = require("../utils/img_display.mjs")
 console = Console()
 
 DEBUG_MODE = False
@@ -23,7 +24,7 @@ DEBUG_MODE = False
 
 class Googler:
     def __init__(self, search_engine='google',debug_mode=False):
-        global DEBUG_MODE
+        global DEBUG_MODE  # Use the global keyword to modify the global variable
         DEBUG_MODE = debug_mode
         self.debug_mode = debug_mode
         # Query string parameters to crawl through results pages
@@ -60,10 +61,22 @@ class Googler:
         proxy = self.proxy
 
         if page == 'stackoverflow':
-            params = self.init_params
-            headers = self.init_headers
-            headers.update({'referer': 'https://stackoverflow.com/',
-                            'origin': 'https://stackoverflow.com'})
+            # params = self.init_params
+            # headers = self.init_headers
+            # headers.update({'referer': 'https://stackoverflow.com/',
+            #                 'origin': 'https://stackoverflow.com'})
+
+            options = Options()
+            options.add_argument("--headless")
+            options.add_experimental_option('excludeSwitches', ['enable-logging'])
+            browser = webdriver.Chrome(options=options)
+            browser.get(url)
+
+            if self.debug_mode:
+                syntax = Syntax(browser.page_source, "html", theme="monokai", line_numbers=True)
+                console.print(syntax)
+
+            return browser
 
         if page == 'stackexchange':
             params = self.init_params
@@ -170,9 +183,52 @@ class Googler:
     @exception_catch(debug=DEBUG_MODE)
     def parse_page(self, robj, parse_page):
 
+        def parse_coding_form(ans_body_obj, page_type='stack') -> List:
+            all_body_elements = ans_body_obj.findChildren(recursive=False)
+            form_structure = []
+            for e in all_body_elements:
+                if page_type == 'stack':
+                    condition_check = (e.has_attr('class') and 's-code-block' in e['class'], )
+                    if condition_check[0]:
+                        condition_check += (e.find('code').has_attr('class'), )
+
+                if page_type == 'pytorch':
+                    condition_check = (e.name == 'pre', )
+                    if condition_check[0]:
+                        condition_check += (True, )
+                if condition_check[0]:
+                    if condition_check[1] and page_type == 'stack':
+                        lang = e.find('code')['class'][1]
+                    elif condition_check[1] and page_type == 'pytorch':
+                        lang = e.find('code')['class'][2]
+                    else:
+                        warnings.warn("Unknown lang")
+                        code_block = (e.text, 'unknown')
+                        form_structure.append(code_block)
+                        continue
+
+                    regex = r'language-(\w+)'
+                    match = re.search(regex, lang)
+
+                    if match:
+                        extracted_lang = match.group(1)
+                        code_block = (e.text, extracted_lang)
+                        form_structure.append(code_block)
+                        if self.debug_mode:
+                            print("Crawl language name: ", extracted_lang)
+                    else:
+                        warnings.warn("Unknown lang")
+                        code_block = (e.text, 'unknown')
+                        form_structure.append(code_block)
+                else:
+                    form_structure.append(e.text)
+
+            return form_structure
+
         if parse_page == 'stackoverflow' or parse_page == 'stackexchange' \
                 or parse_page == 'codegolf_stackexchange' or parse_page == 'math_stackexchange':
-            soup = BeautifulSoup(robj.text, 'lxml')
+            soup = BeautifulSoup(markup=robj.page_source if hasattr(robj, 'page_source')
+                                else robj.text, features='lxml')
 
             profile_url = None
 
@@ -193,14 +249,22 @@ class Googler:
             if tag_ans is None:
                 # No correct ans found, find top answer instead
                 tag_ans = soup.find('div', {'class': 'answer js-answer'})
-            text = tag_ans.find('div', {'class': 's-prose js-post-body'})
+            body_ans = tag_ans.find('div', {'class': 's-prose js-post-body'})
+
+            if self.debug_mode:
+                print("Extracted answer: ", body_ans.text)
+
+            form_structure = parse_coding_form(body_ans, page_type='stack')
+
+            if self.debug_mode:
+                print("Extracted form answer: ", form_structure)
 
             # Find ans avatar
             profile_avt_tag = tag_ans.find('div', {'class': 'gravatar-wrapper-32'})
             profile_url = profile_avt_tag.find('img').__getitem__('src')
 
             return {'title': title, 'num_ans': num_ans,
-                    'solution': text.text, 'profile_url': profile_url,
+                    'solution': form_structure, 'profile_url': profile_url,
                     'type': 'solution'}
 
         if parse_page == 'wiki':
@@ -282,17 +346,35 @@ class Googler:
             for article in articles:
                 if article.find('span', {'class': 'accepted-text'}) is not None:
                     profile_url = 'https://discuss.pytorch.org'+article.find('img', {'class': 'avatar'}).__getitem__('src')
-                    text = article.find('div', {'class': 'cooked'})
+                    body_ans = article.find('div', {'class': 'cooked'})
+
+                    if self.debug_mode:
+                        print("Extracted answer: ", body_ans.text)
+
+                    form_structure = parse_coding_form(body_ans, page_type='pytorch')
+
+                    if self.debug_mode:
+                        print("Extracted form answer: ", form_structure)
+
                     return {'title': title, 'num_ans': num_ans,
-                        'solution': text.text, 'profile_url': profile_url,
+                        'solution': form_structure, 'profile_url': profile_url,
                         'type': 'solution'}
                 else:
                     continue
 
             profile_url = 'https://discuss.pytorch.org'+articles[1].find('img', {'class': 'avatar'}).__getitem__('src')
-            text = articles[1].find('div', {'class': 'cooked'})
+            body_ans = articles[1].find('div', {'class': 'cooked'})
+
+            if self.debug_mode:
+                print("Extracted answer: ", body_ans.text)
+
+            form_structure = parse_coding_form(body_ans, page_type='pytorch')
+
+            if self.debug_mode:
+                print("Extracted form answer: ", form_structure)
+
             return {'title': title, 'num_ans': num_ans,
-                    'solution': text.text, 'profile_url': profile_url,
+                    'solution': form_structure, 'profile_url': profile_url,
                     'type': 'solution'}
 
     def search(self, query):
