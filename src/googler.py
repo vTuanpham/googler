@@ -188,19 +188,18 @@ class Googler:
             form_structure = []
             for e in all_body_elements:
                 if page_type == 'stack':
-                    condition_check = (e.has_attr('class') and 's-code-block' in e['class'], )
+                    condition_check = [e.name == 'pre' and e.find('code') is not None]
                     if condition_check[0]:
-                        condition_check += (e.find('code').has_attr('class'), )
+                        condition_check.append(e.find('code').has_attr('class'))
 
                 if page_type == 'pytorch':
-                    condition_check = (e.name == 'pre', )
+                    condition_check = [e.name == 'pre']
                     if condition_check[0]:
-                        condition_check += (True, )
+                        condition_check.append(True)
+
                 if condition_check[0]:
-                    if condition_check[1] and page_type == 'stack':
-                        lang = e.find('code')['class'][1]
-                    elif condition_check[1] and page_type == 'pytorch':
-                        lang = e.find('code')['class'][2]
+                    if condition_check[1]:
+                        lang = e.find('code')['class'][-1]  # Take the last element of class name which is the lang name
                     else:
                         warnings.warn("Unknown lang")
                         code_block = (e.text, 'unknown')
@@ -236,11 +235,16 @@ class Googler:
             tag_title = soup.find('a', {'class': 'question-hyperlink'})
             title = tag_title.text
 
+            ques_tag = soup.find('div', {'class': 'question js-question'})
+            body_ques = ques_tag.find('div', {'class': 's-prose js-post-body'})
+
+            ques_form_structure = parse_coding_form(body_ques, page_type='stack')
+
             # Get number of answers
             num_ans_header = soup.find('h2', {'class': 'mb0'})
             num_ans = int(num_ans_header.get('data-answercount'))
             if num_ans == 0:
-                return {'title': title, 'num_ans': num_ans,
+                return {'title': title, 'question': ques_form_structure, 'num_ans': num_ans,
                         'solution': 'No answer found!',
                         'profile_url': profile_url, 'type': 'solution'}
 
@@ -254,17 +258,17 @@ class Googler:
             if self.debug_mode:
                 print("Extracted answer: ", body_ans.text)
 
-            form_structure = parse_coding_form(body_ans, page_type='stack')
+            ans_form_structure = parse_coding_form(body_ans, page_type='stack')
 
             if self.debug_mode:
-                print("Extracted form answer: ", form_structure)
+                print("Extracted form answer: ", ans_form_structure)
 
             # Find ans avatar
             profile_avt_tag = tag_ans.find('div', {'class': 'gravatar-wrapper-32'})
             profile_url = profile_avt_tag.find('img').__getitem__('src')
 
-            return {'title': title, 'num_ans': num_ans,
-                    'solution': form_structure, 'profile_url': profile_url,
+            return {'title': title, 'question': ques_form_structure, 'num_ans': num_ans,
+                    'solution': ans_form_structure, 'profile_url': profile_url,
                     'type': 'solution'}
 
         if parse_page == 'wiki':
@@ -334,11 +338,23 @@ class Googler:
             title_tag = soup.find('a', {'class':'fancy-title'})
             title = title_tag.text
 
+            # Find question body
+            ques_tag = soup.find('article', {'id': 'post_1'})
+            ques_body = ques_tag.find('div', {'class': 'cooked'})
+
+            if self.debug_mode:
+                print("Extracted question: ", ques_body.text)
+
+            ques_form_structure = parse_coding_form(ques_body, page_type='pytorch')
+
+            if self.debug_mode:
+                print("Extracted form question: ", ques_form_structure)
+
             # Get number of answers
             try:
                 num_ans = int(li_tag.find('span',{'class': 'number'}).text)
             except:
-                return {'title': title, 'num_ans': num_ans,
+                return {'title': title, 'question': ques_form_structure, 'num_ans': num_ans,
                         'solution': 'No answer found!',
                         'profile_url': profile_url, 'type': 'solution'}
 
@@ -351,13 +367,13 @@ class Googler:
                     if self.debug_mode:
                         print("Extracted answer: ", body_ans.text)
 
-                    form_structure = parse_coding_form(body_ans, page_type='pytorch')
+                    ans_form_structure = parse_coding_form(body_ans, page_type='pytorch')
 
                     if self.debug_mode:
-                        print("Extracted form answer: ", form_structure)
+                        print("Extracted form answer: ", ans_form_structure)
 
-                    return {'title': title, 'num_ans': num_ans,
-                        'solution': form_structure, 'profile_url': profile_url,
+                    return {'title': title, 'question': ques_form_structure, 'num_ans': num_ans,
+                        'solution': ans_form_structure, 'profile_url': profile_url,
                         'type': 'solution'}
                 else:
                     continue
@@ -373,7 +389,7 @@ class Googler:
             if self.debug_mode:
                 print("Extracted form answer: ", form_structure)
 
-            return {'title': title, 'num_ans': num_ans,
+            return {'title': title, 'question': ques_form_structure, 'num_ans': num_ans,
                     'solution': form_structure, 'profile_url': profile_url,
                     'type': 'solution'}
 

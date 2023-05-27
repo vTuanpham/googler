@@ -108,16 +108,33 @@ def parse_print(func):
 
         if result_dict['type'] == 'solution':
             title = result_dict['title']
+            parse_question = result_dict['question']
             num_ans = result_dict['num_ans']
             parse_page = result_dict['solution']
             img_obj = result_dict['profile_url']
             title = f'\n Problem title: {title}'
             text_generator.generate_text(title, 15)
             time.sleep(len(title)*0.08)
+
+            print(f"\n Question: ")
+            print('-' * 17)
+            if isinstance(parse_question, Sequence) and not isinstance(parse_question, str):
+                for e in parse_question:
+                    if isinstance(e, tuple) and not isinstance(parse_question, str):
+                        syntax = Syntax(code=e[0], lexer=e[1] if e[1] != 'unknown' else None,
+                                        theme="monokai", line_numbers=True)
+                        console.print(syntax)
+                    else:
+                        console.print(e.strip())
+            else:
+                print(f'{parse_question.strip()}')
+            print('-' * 17)
+
             print(f' Number of answer in the discuss: {num_ans}')
             print(f'\n Correct answer: ')
             print('-' * 17)
             display_img(img_url=img_obj, size=0.42)
+
             if isinstance(parse_page, Sequence) and not isinstance(parse_page, str):
                 for e in parse_page:
                     if isinstance(e, tuple) and not isinstance(parse_page, str):
