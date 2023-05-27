@@ -5,8 +5,7 @@
 
 ## - Find anything quickly within your terminal :computer:
 ## - Quickly debug your code with provided pre-crawled, correct answer from popular coding disscussion form :sunglasses:
-[screen-recorder-wed-may-24-2023-16-10-04.webm](https://github.com/vTuanpham/googler/assets/82665400/c1fc9d2e-d7b5-45fb-a406-f5b3ae983c98)
-
+[screen-recorder-sat-may-27-2023-22-38-58.webm](https://github.com/vTuanpham/googler/assets/82665400/f17bf4ea-9378-46f3-8c1d-6205570065fa)
 
 #### Give me a star 🌠 if you find this useful!
 
