@@ -5,10 +5,7 @@
 
 ## - Find anything quickly within your terminal :computer:
 ## - Quickly debug your code with provided pre-crawled, correct answer from popular coding disscussion form :sunglasses:
-<p align="center">
-  <img src="https://github.com/vTuanpham/googler/blob/main/assets/Test_run.gif">
-</p>
-
+[screen-recorder-sat-may-27-2023-22-38-58.webm](https://github.com/vTuanpham/googler/assets/82665400/f17bf4ea-9378-46f3-8c1d-6205570065fa)
 
 #### Give me a star 🌠 if you find this useful!
 
