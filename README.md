@@ -20,7 +20,7 @@ npm install
 
 pip install -r requirements.txt
 
-pyintaller google.spec
+pyinstaller google.spec
 ```
 
 ## Command

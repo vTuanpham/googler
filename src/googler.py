@@ -283,7 +283,7 @@ class Googler:
                 title = title_tag.text
 
             # Find definition
-            full_content_tag = soup.find('div', {'class': 'mw-body-content mw-content-ltr'})
+            full_content_tag = soup.find('div', {'id': 'mw-content-text'})
             texts = full_content_tag.findAll('p')
             for text in texts:
                 if len(text.text) > 100:
@@ -448,7 +448,7 @@ class Googler:
                 repobj = self.fetch_html(page='pytorch',url=link)
                 self.parse_page(repobj, parse_page='pytorch')
 
-            if 'https://en.wikipedia.org/' in link:
+            if link.find(".wikipedia.org/") != -1 and link.find("https://") != -1:
                 print(f"\n\n----- |Result| {idx} -----")
                 print(f"Definition in {link}")
                 repobj = self.fetch_html(page='wiki',url=link)
